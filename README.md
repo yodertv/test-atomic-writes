@@ -1,10 +1,13 @@
 # test-atomic-writes
 Test your filesystem's ability to correctly serialize writes as expected in APPEND mode on a POSIX system.
 
-[Visit Golang!](https://golang.org)
-##Software tools and platforms:
+## Software tools and ideas:
 
-##Online Services:
+[Visit Golang!](https://golang.org)
+[Not the Wizard!](https://www.notthewizard.com/2014/06/17/are-files-appends-really-atomic)
+[Stackoverflow question](http://stackoverflow.com/questions/1154446/is-file-append-atomic-in-unix)
+
+## Online Services:
 
 Services 	| URL								| Purpose
 -------- 	| ---								| -------
@@ -16,13 +19,18 @@ golang    	| https://github.com/golang/go 		| Go source code
 
 ## Dev log
 
-###2.24.2018
+### 2.24.2018
 - Published to Github
+- Reported [Apple Bug #37859698](https://bugreport.apple.com/web/?problemID=37859698)
 
-###2.19.2018
+### 2.19.2018
 - Tested on MAC
 APFS Volume • APFS (Encrypted) -- Fails
 USB External Physical Volume • Mac OS Extended (Journaled) -- Works
+- Tested on AWS FreeBSD
+Local Volume • ufs -- Works
+- Tested on AWS Amazon-Linux
+Local Volume • ext4 -- Works
 
 ```
 Amazon_Linux-512MB-Ohio-1
@@ -31,6 +39,12 @@ Amazon_Linux-512MB-Ohio-1
 Each line of out.tmp will be 15013 characters long, writen by 100 workers writing 1000 lines each.
 validate: fd=3 filesize=1501300000 efs=1501300000
 validate: source changes=636 shuffle=6.36 msgCnt=100000 errCnt=0
+[ec2-user@ip-172-26-2-243]$ df -T
+Filesystem     Type     1K-blocks    Used Available Use% Mounted on
+devtmpfs       devtmpfs    241544      56    241488   1% /dev
+tmpfs          tmpfs       250508       0    250508   0% /dev/shm
+/dev/xvda1     ext4      20509288 3111320  17297720  16% /
+[ec2-user@ip-172-26-2-243 ~]$
 
 ```
 
@@ -43,7 +57,7 @@ validate: source changes=86299 shuffle=862.99 msgCnt=100000 errCnt=0
 [ec2-user@ip-172-26-8-133 /usr/home/ec2-user/src/test-atomic-write]$
 ```
 
-###2.18.2018
+### 2.18.2018
 - Tested on AWS lightsail linux. Append was unfailing at all sizes and counts up to 16k.
 - Tested on AWS FreeBSD lightsail too.
 
@@ -82,8 +96,8 @@ Each line of out.tmp will be 16000 characters long, writen by 50 workers writing
 [1]+  Done                    ./test-atomic-write -n 10000 -s 16000
 ```
 
-###2.13.2018
+### 2.13.2018
 -  Cleaned up stats. test works, but results seem to suggest that whenever the writes are shuffled between writers, writes are lost.
 
-###2.10.2018
-- writing an append write test program.
+### 2.10.2018
+- writing an append write test program. Modeled after Oz Soloman's shell script for the same purpose. His can be found: https://www.notthewizard.com/2014/06/17/are-files-appends-really-atomic/
