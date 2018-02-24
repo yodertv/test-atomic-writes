@@ -2,9 +2,9 @@ test-atomic-writes
 ==================
 Test your filesystem's ability to correctly serialize writes as expected in APPEND mode on a POSIX system.
 ## Tools and ideas:
-[Visit Golang!](https://golang.org)
-[Not the Wizard!](https://www.notthewizard.com/2014/06/17/are-files-appends-really-atomic)
-[Stackoverflow file-append atomic question](http://stackoverflow.com/questions/1154446/is-file-append-atomic-in-unix)
+- [Visit Golang!](https://golang.org)
+- [Not the Wizard!](https://www.notthewizard.com/2014/06/17/are-files-appends-really-atomic)
+- [Stackoverflow file-append atomic question](http://stackoverflow.com/questions/1154446/is-file-append-atomic-in-unix)
 ## Issue
 - Write in append mode in Mac OS X APFS doesn't appear to be atomic
 ## Dev log
@@ -77,4 +77,4 @@ Each line of out.tmp will be 16000 characters long, writen by 50 workers writing
 ### 2.13.2018
 -  Cleaned up stats. test works, but results seem to suggest that whenever the writes are shuffled between writers, writes are lost.
 ### 2.10.2018
-- writing an append write test program. Modeled after Oz Soloman's shell script for the same purpose. His can be found: https://www.notthewizard.com/2014/06/17/are-files-appends-really-atomic/
+- writing an append write test program. Modeled after Oz Soloman's shell script for the same purpose. His can be found [here](https://www.notthewizard.com/2014/06/17/are-files-appends-really-atomic/).
