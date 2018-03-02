@@ -11,14 +11,22 @@ Test your filesystem's ability to correctly serialize writes as expected in APPE
 ### 2.24.2018
 - Published to Github
 - Reported [Apple Bug #37859698](https://bugreport.apple.com/web/?problemID=37859698)
-### 2.19.2018
-- Tested on MAC
-APFS Volume • APFS (Encrypted) -- Fails
-USB External Physical Volume • Mac OS Extended (Journaled) -- Works
-- Tested on AWS FreeBSD
-Local Volume • ufs -- Works
-- Tested on AWS Amazon-Linux
-Local Volume • ext4 -- Works
+### 2.19.2018 Tested
+- MacOS APFS Volume • APFS (Encrypted) -- Fails
+```
+mikes-air:test-atomic-writes mike$ ./test-atomic-writes -n 100
+Each line of file out.tmp will be 4096 bytes, written by 50 workers, writing 100 lines each.
+validate: filesize missmatch: filesize=20467712 expected file size=20480000
+validate: missed messages: msgCnt=4997 expected=5000 difference=3
+validate: source changes=60 shuffle=1.20 msgCnt=4997 errCnt=2
+mikes-air:test-atomic-writes mike$ df -T apfs
+Filesystem   512-blocks      Used Available Capacity iused               ifree %iused  Mounted on
+/dev/disk1s1  489825072 220048920 262175048    46% 1468208 9223372036853307599    0%   /
+/dev/disk1s4  489825072   6291496 262175048     3%       3 9223372036854775804    0%   /private/var/vm
+```
+- MAcOS USB External Physical Volume • Mac OS Extended (Journaled) -- Works
+- AWS FreeBSD Local Volume • ufs -- Works
+- AWS Amazon-Linux Local Volume • ext4 -- Works
 ```
 Amazon_Linux-512MB-Ohio-1
 18.219.2.238
