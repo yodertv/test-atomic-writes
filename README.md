@@ -30,7 +30,7 @@ Usage of ./test-atomic-write:
 
 ## Dev log
 ### 6.9.2018
-- Apple asked me to test 10.14, it's not out for public beta so I retested to get ready. Apfs seems to be working
+- Apple asked me to test 10.14, it's not out for public beta so I retested to get ready. Apfs seems to be working on High Sierra 10.13.5.
 ```
 mikes-air:test-atomic-write mike$ uname -a
 Darwin mikes-air.local 17.6.0 Darwin Kernel Version 17.6.0: Tue May  8 15:22:16 PDT 2018; root:xnu-4570.61.1~1/RELEASE_X86_64 x86_64
