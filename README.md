@@ -1,13 +1,50 @@
 test-atomic-writes
 ==================
 Test your filesystem's ability to correctly serialize writes as expected in APPEND mode on a POSIX system.
+
 ## Tools and ideas:
 - [Visit Golang!](https://golang.org)
 - [Not the Wizard!](https://www.notthewizard.com/2014/06/17/are-files-appends-really-atomic)
 - [Stackoverflow file-append atomic question](http://stackoverflow.com/questions/1154446/is-file-append-atomic-in-unix)
+
 ## Issue
-- Write in append mode in Mac OS X APFS doesn't appear to be atomic
+- Write in append mode in Mac OS X APFS doesn't appear to be atomic.
+
+## Usage
+```
+mikes-air:test-atomic-write mike$ ./test-atomic-write -help
+Usage of ./test-atomic-write:
+  -f string
+    	f(ilename) to use for test (default "out.tmp")
+  -n int
+    	n(umber): of writes per worker (default 50)
+  -readonly
+    	readonly: just run the validate function
+  -s int
+    	s(size): in bytes to write (default 4096)
+  -w int
+    	w(orkers): number of concurent writers (default 50)
+  -worker int
+    	worker: perform the writes (default -1)
+```
+
 ## Dev log
+### 6.9.2018
+- Apple asked me to test 10.14, it's not out for public beta so I retested to get ready. Apfs seems to be working
+```
+mikes-air:test-atomic-write mike$ uname -a
+Darwin mikes-air.local 17.6.0 Darwin Kernel Version 17.6.0: Tue May  8 15:22:16 PDT 2018; root:xnu-4570.61.1~1/RELEASE_X86_64 x86_64
+mikes-air:test-atomic-write mike$ ./test-atomic-write -s 15913 -w 100 -n 1200
+Each line of file out.tmp will be 15913 bytes, written by 100 workers, writing 1200 lines each.
+validate: source changes=119235 shuffle=1192.35 msgCnt=120000 errCnt=0
+mikes-air:test-atomic-write mike$ df -T apfs
+Filesystem   512-blocks      Used Available Capacity iused               ifree %iused  Mounted on
+/dev/disk1s1  489825072 242941256 216193168    53% 1504897 9223372036853270910    0%   /
+/dev/disk1s4  489825072   4194344 216193168     2%       3 9223372036854775804    0%   /private/var/vm
+/dev/disk1s5  489825072  24114992 216193168    11%  432634 9223372036854343173    0%   /Volumes/mohave
+mikes-air:test-atomic-write mike$ 
+```
+
 ### 2.24.2018
 - Published to Github
 - Reported [Apple Bug #37859698](https://bugreport.apple.com/web/?problemID=37859698)
