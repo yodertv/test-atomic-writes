@@ -7,9 +7,6 @@ Test your filesystem's ability to correctly serialize writes as expected in APPE
 - [Not the Wizard!](https://www.notthewizard.com/2014/06/17/are-files-appends-really-atomic)
 - [Stackoverflow file-append atomic question](http://stackoverflow.com/questions/1154446/is-file-append-atomic-in-unix)
 
-## Issue
-- Write in append mode in Mac OS X APFS doesn't appear to be atomic.
-
 ## Usage
 ```
 mikes-air:test-atomic-write mike$ ./test-atomic-write -help
@@ -27,6 +24,11 @@ Usage of ./test-atomic-write:
   -worker int
     	worker: perform the writes (default -1)
 ```
+Note: For readonly flag to work correctly the same arguments must be provided that created the file you wish to read.
+
+## Resolved Issues
+- Write in append mode in Mac OS X APFS doesn't appear to be atomic. Resolved 6.9.2018.
+- 
 
 ## Dev log
 ### 6.9.2018
