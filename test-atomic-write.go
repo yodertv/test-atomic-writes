@@ -126,21 +126,21 @@ func main() {
 		readonly bool
 		filename string
 	)
-	flag.IntVar(&count, "n", 50, "n(umber): of writes per worker")
-	flag.IntVar(&size, "s", 4096, "s(size): in bytes to write")
-	flag.IntVar(&workers, "w", 50, "w(orkers): number of concurent writers")
-	flag.IntVar(&worker, "worker", -1, "worker: perform the writes")
-	flag.BoolVar(&readonly, "readonly", false, "readonly: just run the validate function")
 	flag.StringVar(&filename, "f", "out.tmp", "f(ilename) to use for test")
+	flag.IntVar(&count, "c", 50, "c(ount): of writes per worker, use at least 1")
+	flag.IntVar(&size, "s", 4096, "s(size): in bytes to write, use at least 2")
+	flag.IntVar(&workers, "w", 50, "w(orkers): number of concurent writers, use at least 1 and no more than 222")
+	flag.BoolVar(&readonly, "readonly", false, "readonly: just run the validate function, use identical flags")
+	flag.IntVar(&worker, "worker", -1, "worker: perform the writes, internal")
 	flag.Parse()
 	if len(flag.Args()) != 0 { // Extraneous arguments
 		flag.Usage();
 		return
 	}
 	if workers > 222 || workers < 1 || count < 1 || size < 2 {
-		fmt.Println("Between 1 and 222 workers of at least size 2 required to test.")
+		fmt.Println("Between 1 and 222 workers, writing at least 1 each, of at least size 2 required to test.")
 		flag.Usage();
-		return
+		return	
 	}
 	// As a worker append cnt messages unique to the worker.
 	if worker > -1 {

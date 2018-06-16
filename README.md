@@ -9,26 +9,26 @@ Test your filesystem's ability to correctly serialize writes as expected in APPE
 
 ## Usage
 ```
-mikes-air:test-atomic-write mike$ ./test-atomic-write -help
-Usage of ./test-atomic-write:
+mikes-air:test-atomic-writes mike$ ./test-atomic-writes -s 1
+Between 1 and 222 workers, writing at least 1 each, of at least size 2 required to test.
+Usage of ./test-atomic-writes:
+  -c int
+    	c(ount): of writes per worker, use at least 1 (default 50)
   -f string
     	f(ilename) to use for test (default "out.tmp")
-  -n int
-    	n(umber): of writes per worker (default 50)
   -readonly
-    	readonly: just run the validate function
+    	readonly: just run the validate function, use identical flags
   -s int
-    	s(size): in bytes to write (default 4096)
+    	s(size): in bytes to write, use at least 2 (default 4096)
   -w int
-    	w(orkers): number of concurent writers (default 50)
+    	w(orkers): number of concurent writers, use at least 1 and no more than 222 (default 50)
   -worker int
-    	worker: perform the writes (default -1)
+    	worker: perform the writes, internal (default -1)
 ```
 Note: For readonly flag to work correctly the same arguments must be provided that created the file you wish to read.
 
 ## Resolved Issues
 - Write in append mode in Mac OS X APFS doesn't appear to be atomic. Resolved 6.9.2018.
-- 
 
 ## Dev log
 ### 6.9.2018
