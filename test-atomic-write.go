@@ -137,8 +137,8 @@ func main() {
 		flag.Usage();
 		return
 	}
-	if workers == 0 || count == 0 || size == 0 {
-		fmt.Println("At least one write is required to test.")
+	if workers > 222 || workers < 1 || count < 1 || size < 2 {
+		fmt.Println("Between 1 and 222 workers of at least size 2 required to test.")
 		flag.Usage();
 		return
 	}
@@ -149,7 +149,7 @@ func main() {
 		defer close_log(fd, filename)
 		msg := make([]byte, size)
 		for i := 0; i < size; i++ {
-			msg[i] = byte(' ' + worker)
+			msg[i] = byte('!' + worker)
 		}
 		msg[size-1] = '\n'
 		for i := 0 ; i < count ; i++ {
