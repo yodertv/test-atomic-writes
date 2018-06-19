@@ -31,6 +31,19 @@ Note: For readonly flag to work correctly the same arguments must be provided th
 - Write in append mode in Mac OS X APFS doesn't appear to be atomic. Resolved 6.9.2018.
 
 ## Dev log
+### 6.12.2018
+- Tested new beta for 10.13.5:
+```
+mikes-air:test-atomic-write mike$ uname -a
+Darwin mikes-air.local 17.7.0 Darwin Kernel Version 17.7.0: Tue Jun 12 21:39:16 PDT 2018; root:xnu-4570.70.24~11/RELEASE_X86_64 x86_64
+mikes-air:test-atomic-write mike$ ./test-atomic-write -s 1500 -w 222 -c 1208
+Each line of file out.tmp will be 1500 bytes, written by 222 workers, writing 1208 lines each.
+validate: source changes=261766 shuffle=1179.13 msgCnt=268176 errCnt=0
+mikes-air:test-atomic-write mike$ ./test-atomic-write -s 15003 -w 222 -c 1208
+Each line of file out.tmp will be 15003 bytes, written by 222 workers, writing 1208 lines each.
+validate: source changes=264756 shuffle=1192.59 msgCnt=268176 errCnt=0
+```
+
 ### 6.9.2018
 - Apple asked me to test 10.14, it's not out for public beta so I retested to get ready. Apfs seems to be working on High Sierra 10.13.5.
 ```
@@ -102,8 +115,7 @@ open("out.tmp\0", 0x20A, 0x180)		 = 3 0
 [ec2-user@ip-172-26-8-133 /usr/home/ec2-user/src/test-atomic-write]$ uname -a
 FreeBSD ip-172-26-8-133 11.1-RELEASE-p4 FreeBSD 11.1-RELEASE-p4 #0: Tue Nov 14 06:12:40 UTC 2017     root@amd64-builder.daemonology.net:/usr/obj/usr/src/sys/GENERIC  amd64
 [ec2-user@ip-172-26-8-133 /usr/home/ec2-user/src/test-atomic-write]$
-[ec2-user@ip-172-26-8-133 /usr/home/ec2-user/src/test-atomic-write]$ ./test-atomic-write -
-s 500013 -w 100
+[ec2-user@ip-172-26-8-133 /usr/home/ec2-user/src/test-atomic-write]$ ./test-atomic-write -s 500013 -w 100
 Each line of file out.tmp will be 500013 bytes, writen by 100 workers, writing 50 lines each.
 validate: source changes=4745 shuffle=47.45 msgCnt=5000 errCnt=0
 [ec2-user@ip-172-26-8-133 /usr/home/ec2-user/src/test-atomic-write]$
