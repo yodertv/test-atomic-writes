@@ -1,3 +1,5 @@
 **/*
 !**/*.go
 !**/
+!Dockerfile
+!now.json

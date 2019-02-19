@@ -31,6 +31,9 @@ Note: For readonly flag to work correctly the same arguments must be provided th
 - Write in append mode in Mac OS X APFS doesn't appear to be atomic. Resolved 6.9.2018.
 
 ## Dev log
+### 2.18.2019
+- Added deployment details for Zeit Now v1 where the default test ran successfully.
+
 ### 6.12.2018
 - Tested new beta for 10.13.5:
 ```
