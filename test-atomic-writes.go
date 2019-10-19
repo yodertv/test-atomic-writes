@@ -1,3 +1,4 @@
+// Command test-atomic-writes implements a test to validate that multiple writes to a file are written atomically. I.e. each write is complete and not interleved with parralel writes.
 package main
 
 import (
