@@ -51,7 +51,7 @@ func open_log(path string, length int) (fd int, d []byte, err error) {
 func append_msg(fd int, msg []byte) (nw int, err error){
 	nw, err = syscall.Write(fd, msg)
 	if err != nil {
-		fmt.Println("Write threw error: %s", err)
+		fmt.Printf("Write threw error: %s\n", err)
 	}
 	return // naked return
 }
