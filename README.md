@@ -31,6 +31,12 @@ Note: For readonly flag to work correctly the same arguments must be provided th
 - Write in append mode in Mac OS X APFS doesn't appear to be atomic. Resolved 6.9.2018.
 
 ## Dev log
+### 8.8.2020
+- Days of wfh and physical isolation: 148
+- Zeit deco'd version 1.0. So this is first forray into Vercel. Will attempt to deploy this go cmdline program as a serverless function.
+- The idea is to make an API that will exec that cmdline app and direct it's output as the http respons.
+- Replaced now with vercel. Go API is working to replace DOCKER setup. This is better because the test can be triggered by querring the API.
+
 ### 2.18.2019
 - Added deployment details for Zeit Now v1 where the default test ran successfully.
 
