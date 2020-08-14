@@ -32,4 +32,5 @@ func TestAtomicWriteHandler(t *testing.T) {
         t.Errorf("handler returned unexpected body size: got %v want %v",
             len(rr.Body.String()), expected)
     }
+    t.Log(rr.Body.String())
 }

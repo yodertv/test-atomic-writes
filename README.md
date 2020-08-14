@@ -31,6 +31,9 @@ Note: For readonly flag to work correctly the same arguments must be provided th
 - Write in append mode in Mac OS X APFS doesn't appear to be atomic. Resolved 6.9.2018.
 
 ## Dev log
+### 8.10.2020
+- Added a test for the API to force it to compile with out having to deploy.
+
 ### 8.8.2020
 - Days of wfh and physical isolation: 148
 - Zeit deco'd version 1.0. So this is first forray into Vercel. Will attempt to deploy this go cmdline program as a serverless function.

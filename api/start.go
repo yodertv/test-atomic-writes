@@ -18,11 +18,11 @@ func Handler(w http.ResponseWriter, r *http.Request) {
     fmt.Fprintf(w, "%#v\n", os.Environ())
     fmt.Fprintf(w, "pagesize=%d\n", syscall.Getpagesize())
 	var cmdString []string
-    cmd := cmdMake(w, "../test-atomic-writes", cmdString)
+    cmd := cmdMake(w, "./test-atomic-writes", cmdString)
 	err := cmd.Start()
-	if err != nil { fmt.Fprintf(w, " Start failed: %#v\n", err) }
+	if err != nil { fmt.Fprintf(w, "Start failed: %v\n", err) }
 	err = cmd.Wait()
-	if err != nil { fmt.Fprintf(w, "Wait failed: %#v\n", err) }
+	if err != nil { fmt.Fprintf(w, "Wait failed: %v\n", err) }
 }
 
 // subPscat returns an exec.Cmd with the pscat subtest set up to be started or run with the subcommand arguments.
