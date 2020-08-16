@@ -31,6 +31,13 @@ Note: For readonly flag to work correctly the same arguments must be provided th
 - Write in append mode in Mac OS X APFS doesn't appear to be atomic. Resolved 6.9.2018.
 
 ## Dev log
+### 8.15.2020
+- Continuing to work on getting this go function running on Vercel. Code compiles and runs locally. Fails to build:
+```
+2020-08-15T19:49:14.438Z  Error: Could not find an exported function in "api/test-atomic-writes.go"
+2020-08-15T19:49:14.438Z  Learn more: https://vercel.com/docs/runtimes#official-runtimes/go
+```
+
 ### 8.10.2020
 - Added a test for the API to force it to compile with out having to deploy.
 

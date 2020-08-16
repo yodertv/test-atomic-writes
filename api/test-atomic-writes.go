@@ -1,5 +1,5 @@
 // Command test-atomic-writes implements a test to validate that multiple writes to a file are written atomically. I.e. each write is complete and not interleved with parralel writes.
-package main
+package api
 
 import (
 	"os"
@@ -69,6 +69,7 @@ func validate_bytes(path string, count int, size int, workers int) int {
 	efs := count * size * workers
 	emc := count * workers
 	d, err := map_log(fd, int(filesize))
+	check(err)
 	lastByte := byte(d[0])
 	lastMsg := lastByte
 	msgSrcChangeCnt := 1
@@ -117,7 +118,7 @@ func close_log (fd int, file string){
 	// syscall.Unlink(file)
 }
 
-func main() {
+func Main() {
 
 	var (
 		count int
