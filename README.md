@@ -31,6 +31,13 @@ Note: For readonly flag to work correctly the same arguments must be provided th
 - Write in append mode in Mac OS X APFS doesn't appear to be atomic. Resolved 6.9.2018.
 
 ## Dev log
+### 8.23.2020
+- Able to deploy to Vercel to build and test. Demonstrates a lamba API. Added required build.sh.
+- Test both parts by using:
+```
+go test -v . ./api
+```
+
 ### 8.15.2020
 - Continuing to work on getting this go function running on Vercel. Code compiles and runs locally. Fails to build:
 ```
