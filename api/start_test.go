@@ -1,6 +1,6 @@
 // test-atomic-writes_test.go
 
-package api
+package handler
 
 import (
 	"testing"
