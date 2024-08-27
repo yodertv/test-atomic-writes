@@ -15,6 +15,7 @@ mv README.html $DIST
 go version > $DIST/version.txt
 env > $DIST/build-env.txt
 go env > $DIST/go-env.txt
+go mod init
 go build -o test-atomic-writes
 go test -cpu 4 -parallel 20 -timeout 5m -v > $DIST/test-output.log
 
