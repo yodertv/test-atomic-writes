@@ -1,4 +1,7 @@
 .vercel
-README.html
 out.tmp
 test-atomic-writes
+pkg/
+go.mod
+public
+

@@ -14,19 +14,27 @@ mv go /usr/local
 export GOROOT=/usr/local/go
 export GOPATH=$PWD
 export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
-echo $PWD
+echo "PWD = "$PWD
+echo "mv"
 mv README.html $DIST
+echo "go version = "
 go version
+echo "env = "
 env
+echo "go env"
 go env
-go mod init
+echo "go mod init main"
+go mod init main
+echo "go build -o"
 go build -o test-atomic-writes
+echo "go test"
 go test -cpu 4 -parallel 20 -timeout 5m -v > $DIST/test-output.log
 
 # Would like to be able to install this on my lamda, but haven't learned how to deploy more code to the api dectory.
 # For now you have to redeploy to test again.
 # mv test-atomic-writes api
-ls -lR /var/task > $DIST/ls.txt
+echo "ls -lR"
+ls -lR .
 
 # Always exit successfully because when the build or test fails the dist directory is not served 
 # by Vercel so you can't see the test output for debugging.
