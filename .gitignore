@@ -1,7 +1,4 @@
-**/*
-!**/*.go
-!**/
-!Dockerfile
-!now.json
-
 .vercel
+README.html
+out.tmp
+test-atomic-writes
