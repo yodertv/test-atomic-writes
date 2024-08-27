@@ -8,7 +8,7 @@ mv go /usr/local
 export GOROOT=/usr/local/go
 export GOPATH=$PWD
 export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
-export DIST=.
+export DIST=public
 mkdir -p $DIST
 echo $PWD > $DIST/pwd.txt
 mv README.html $DIST
