@@ -12,9 +12,7 @@ wget -q https://go.dev/dl/go1.23.0.linux-amd64.tar.gz
 tar -xzf go1.23.0.linux-amd64.tar.gz
 mv go /usr/local
 export GOROOT=/usr/local/go
-export GOPATH=$PWD
-export GO111MODULE=on
-export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+export PATH=$GOROOT/bin:$PATH
 echo "PWD = "$PWD
 echo "mv"
 mv README.html $DIST
@@ -28,9 +26,9 @@ echo "go mod init main"
 go mod init main
 echo "go mod tidy"
 go mod tidy
-echo "go build -o"
+echo "go build -o test-atomic-writes"
 go build -o test-atomic-writes
-echo "go test"
+echo "go test main_test.go -cpu 4 -parallel 20 -timeout 5m -v > $DIST/test-output.log"
 go test main_test.go -cpu 4 -parallel 20 -timeout 5m -v > $DIST/test-output.log
 
 # Would like to be able to install this on my lamda, but haven't learned how to deploy more code to the api dectory.
