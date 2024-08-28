@@ -27,10 +27,25 @@ Usage of ./test-atomic-writes:
 ```
 Note: For readonly flag to work correctly the same arguments must be provided that created the file you wish to read.
 
+## Test
+```
+go test -v main_test.go
+```
+- Hosted at vercel to test go deployment: https://test-atomic-writes-w4db.vercel.app/api/start.
+- Currently broken.
+
+## Todo
+- Fix api/start to call the test code properly. Currently just demonstrated by extracting go environment info and executing "ls" and "pwd".
+
 ## Resolved Issues
 - Write in append mode in Mac OS X APFS doesn't appear to be atomic. Resolved 6.9.2018.
 
 ## Dev log
+### 8.27.2024
+- Redeploying to vercel w/ Github integration.
+- Adjusting build.sh.
+- Lamda code is running and producing output at 
+
 ### 8.23.2020
 - Able to deploy to Vercel to build and test. Demonstrates a lamba API. Added required build.sh.
 - Test both parts by using:

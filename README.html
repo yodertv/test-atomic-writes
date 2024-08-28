@@ -1103,17 +1103,24 @@ Usage of ./test-atomic-writes:
 </pre></div>
 Note: For readonly flag to work correctly the same arguments must be provided that created the file you wish to read.</p>
 <h2 id="test">Test<a class="headerlink" href="#test" title="Permanent link"></a></h2>
-<div class="highlight"><pre>go test -v . ./api
+<p><div class="highlight"><pre>go test -v main_test.go
 </pre></div>
-
+- Hosted at vercel to test go deployment: <a href="https://test-atomic-writes-w4db.vercel.app/api/start">https://test-atomic-writes-w4db.vercel.app/api/start</a>.
+- Currently broken.</p>
+<h2 id="todo">Todo<a class="headerlink" href="#todo" title="Permanent link"></a></h2>
+<ul>
+<li>Fix api/start to call the test code properly. Currently just demonstrated by extracting go environment info and executing &ldquo;ls&rdquo; and &ldquo;pwd&rdquo;.</li>
+</ul>
 <h2 id="resolved-issues">Resolved Issues<a class="headerlink" href="#resolved-issues" title="Permanent link"></a></h2>
 <ul>
 <li>Write in append mode in Mac OS X APFS doesn&rsquo;t appear to be atomic. Resolved 6.9.2018.</li>
 </ul>
 <h2 id="dev-log">Dev log<a class="headerlink" href="#dev-log" title="Permanent link"></a></h2>
-<h3 id="8262024">8.26.2024<a class="headerlink" href="#8262024" title="Permanent link"></a></h3>
+<h3 id="8272024">8.27.2024<a class="headerlink" href="#8272024" title="Permanent link"></a></h3>
 <ul>
 <li>Redeploying to vercel w/ Github integration.</li>
+<li>Adjusting build.sh.</li>
+<li>Lamda code is running and producing output at </li>
 </ul>
 <h3 id="8232020">8.23.2020<a class="headerlink" href="#8232020" title="Permanent link"></a></h3>
 <ul>
