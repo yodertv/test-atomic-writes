@@ -13,7 +13,7 @@ tar -xzf go1.23.0.linux-amd64.tar.gz
 mv go /usr/local
 export GOROOT=/usr/local/go
 export GOPATH=$PWD
-export GO111MODULE=auto
+export GO111MODULE=on
 export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 echo "PWD = "$PWD
 echo "mv"
