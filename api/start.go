@@ -16,28 +16,31 @@ func Handler(w http.ResponseWriter, r *http.Request) {
     currentTime := time.Now().Format(time.RFC850)
     fmt.Fprintf(w, "%v\n", currentTime)
     fmt.Fprintf(w, "%#v\n", runtime.GOOS)
-    fmt.Fprintf(w, "%v\n", strings.Join(os.Environ(), "\n"))
+//    fmt.Fprintf(w, "%v\n", strings.Join(os.Environ(), "\n"))
     fmt.Fprintf(w, "pagesize=%d\n", syscall.Getpagesize())
     name, err := os.Hostname()
     fmt.Fprintf(w, "%s, %v\n", name, err)
-	var cmdString []string = []string{}
-    cmd := cmdMake(w, "./handler", cmdString)
+	var cmdName string = "../test-atomic-writes"
+    var cmdArgs []string = []string{}
+    var cmd *exec.Cmd = cmdMake(w, cmdName, cmdArgs)
 	err = cmd.Start()
-	if err != nil { fmt.Fprintf(w, "Start failed: %v\n", err) }
+    if err != nil { fmt.Fprintf(w, "Start failed for command %s %s: %v\n", cmdName, cmdArgs, err) }
 	err = cmd.Wait()
-	if err != nil { fmt.Fprintf(w, "Wait failed: %v\n", err) }
-    cmdString = []string{}
-    cmd = cmdMake(w, "pwd", cmdString)
+    if err != nil { fmt.Fprintf(w, "Wait failed for command %s %s: %v\n",cmdName, cmdArgs, err) }
+    cmdName = "pwd"
+    cmdArgs = []string{}
+    cmd = cmdMake(w, cmdName, cmdArgs)
     err = cmd.Start()
-    if err != nil { fmt.Fprintf(w, "Start failed: %v\n", err) }
+    if err != nil { fmt.Fprintf(w, "Start failed for command %s %s: %v\n", cmdName, cmdArgs, err) }
     err = cmd.Wait()
-    if err != nil { fmt.Fprintf(w, "Wait failed: %v\n", err) }
-    cmdString = []string{"-la", ".", ".."}
-    cmd = cmdMake(w, "ls", cmdString)
+    if err != nil { fmt.Fprintf(w, "Wait failed for command %s %s: %v\n",cmdName, cmdArgs, err) }
+    cmdName = "ls"
+    cmdArgs = []string{"-la", "/", ".", ".."}
+    cmd = cmdMake(w, cmdName, cmdArgs)
     err = cmd.Start()
-    if err != nil { fmt.Fprintf(w, "Start failed: %v\n", err) }
+    if err != nil { fmt.Fprintf(w, "Start failed for command %s %s: %v\n", cmdName, cmdArgs, err) }
     err = cmd.Wait()
-    if err != nil { fmt.Fprintf(w, "Wait failed: %v\n", err) }
+    if err != nil { fmt.Fprintf(w, "Wait failed for command %s %s: %v\n",cmdName, cmdArgs, err) }
 }
 
 // cmdMake returns an exec.Cmd with the command s set up to be started or run with args.
