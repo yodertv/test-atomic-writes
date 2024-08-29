@@ -30,6 +30,7 @@ echo "go build -o test-atomic-writes"
 go build -o test-atomic-writes
 echo "go test main_test.go -cpu 4 -parallel 20 -timeout 5m -v > $DIST/test-output.log"
 go test main_test.go -cpu 4 -parallel 20 -timeout 5m -v > $DIST/test-output.log
+mv test-atomic-writes $DIST
 
 # Would like to be able to install this on my lamda, but haven't learned how to deploy more code to the api dectory.
 # For now you have to redeploy to test again.
