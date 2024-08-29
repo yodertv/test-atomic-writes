@@ -19,7 +19,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
     fmt.Fprintf(w, "pagesize=%d\n", syscall.Getpagesize())
     name, err := os.Hostname()
     fmt.Fprintf(w, "%s, %v\n", name, err)
-	var cmdName string = "../test-atomic-writes"
+	var cmdName string = "./test-atomic-writes"
     var cmdArgs []string = []string{}
     var cmd *exec.Cmd = cmdMake(w, cmdName, cmdArgs)
 	err = cmd.Start()
