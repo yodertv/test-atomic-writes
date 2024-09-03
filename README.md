@@ -31,8 +31,7 @@ Note: For readonly flag to work correctly the same arguments must be provided th
 ```
 go test -v main_test.go
 ```
-- Hosted at vercel to test go deployment: https://test-atomic-writes-w4db.vercel.app/api/start.
-- Currently broken.
+- Hosted at vercel. See the test results from the last deployment at https://test-atomic-writes.vercel.app/test-output.log.
 
 ## Todo
 - Fix api/start to call the test code properly. Currently just demonstrated by extracting go environment info and executing "ls" and "pwd".
@@ -44,7 +43,7 @@ go test -v main_test.go
 ### 8.27.2024
 - Redeploying to vercel w/ Github integration.
 - Adjusting build.sh.
-- Lamda code is running and producing output at 
+- Lamda code is running and producing output at https://test-atomic-writes.vercel.app/api/start.
 
 ### 8.23.2020
 - Able to deploy to Vercel to build and test. Demonstrates a lamba API. Added required build.sh.

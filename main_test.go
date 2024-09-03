@@ -2,7 +2,7 @@
 //
 // Test the pscat utility
 //
-package main_test
+package main
 
 import (
 	"os"

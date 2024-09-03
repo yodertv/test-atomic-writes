@@ -1,4 +1,4 @@
-// test-atomic-writes_test.go
+// start_test.go
 
 package handler
 
@@ -6,7 +6,6 @@ import (
 	"testing"
 	"net/http"
     "net/http/httptest"
-    "handler"
 )
 
 func TestAtomicWriteHandler(t *testing.T) {
@@ -18,7 +17,7 @@ func TestAtomicWriteHandler(t *testing.T) {
     }
     // We create a ResponseRecorder (which satisfies http.ResponseWriter) to record the response.
     rr := httptest.NewRecorder()
-    hndlr := http.HandlerFunc(handler.Handler)
+    hndlr := http.HandlerFunc(Handler)
     // Our handlers satisfy http.Handler, so we can call their ServeHTTP method
     // directly and pass in our Request and ResponseRecorder.
     hndlr.ServeHTTP(rr, req)

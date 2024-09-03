@@ -15,10 +15,12 @@ func Handler(w http.ResponseWriter, r *http.Request) {
     currentTime := time.Now().Format(time.RFC850)
     fmt.Fprintf(w, "%v\n", currentTime)
     fmt.Fprintf(w, "%#v\n", runtime.GOOS)
-//    fmt.Fprintf(w, "%v\n", strings.Join(os.Environ(), "\n"))
     fmt.Fprintf(w, "pagesize=%d\n", syscall.Getpagesize())
     name, err := os.Hostname()
     fmt.Fprintf(w, "%s, %v\n", name, err)
+/*
+    // This idea doesn't work in vercel. I can't put executables into the api directory and the api 
+    // directory can't see any of the public files served by the vercel run-time.
 	var cmdName string = "./test-atomic-writes"
     var cmdArgs []string = []string{}
     var cmd *exec.Cmd = cmdMake(w, cmdName, cmdArgs)
@@ -26,9 +28,10 @@ func Handler(w http.ResponseWriter, r *http.Request) {
     if err != nil { fmt.Fprintf(w, "Start failed for command %s %s: %v\n", cmdName, cmdArgs, err) }
 	err = cmd.Wait()
     if err != nil { fmt.Fprintf(w, "Wait failed for command %s %s: %v\n",cmdName, cmdArgs, err) }
-    cmdName = "pwd"
-    cmdArgs = []string{}
-    cmd = cmdMake(w, cmdName, cmdArgs)
+ */
+    cmdName := "pwd"
+    cmdArgs := []string{}
+    cmd := cmdMake(w, cmdName, cmdArgs)
     err = cmd.Start()
     if err != nil { fmt.Fprintf(w, "Start failed for command %s %s: %v\n", cmdName, cmdArgs, err) }
     err = cmd.Wait()
