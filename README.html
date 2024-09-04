@@ -1078,7 +1078,7 @@ body .markdown-body
 .highlight .gc{color:#999;background-color:#EAF2F5}
 </style><title>README</title></head><body><article class="markdown-body"><h1 id="test-atomic-writes">test-atomic-writes<a class="headerlink" href="#test-atomic-writes" title="Permanent link"></a></h1>
 <p>Test your filesystem&rsquo;s ability to correctly serialize writes as expected in APPEND mode on a POSIX system.</p>
-<h2 id="tools-and-ideas">Tools and ideas:<a class="headerlink" href="#tools-and-ideas" title="Permanent link"></a></h2>
+<h2 id="resources">Resources<a class="headerlink" href="#resources" title="Permanent link"></a></h2>
 <ul>
 <li><a href="https://golang.org">Visit Golang!</a></li>
 <li><a href="https://www.notthewizard.com/2014/06/17/are-files-appends-really-atomic">Not the Wizard!</a></li>
@@ -1101,11 +1101,18 @@ Usage of ./test-atomic-writes:
   -worker int
         worker: perform the writes, internal (default -1)
 </pre></div>
-Note: For readonly flag to work correctly the same arguments must be provided that created the file you wish to read.</p>
+Note: The readonly switch also needs the identical parameters used to create the file.</p>
 <h2 id="test">Test<a class="headerlink" href="#test" title="Permanent link"></a></h2>
-<p><div class="highlight"><pre>go test -v main_test.go
+<div class="highlight"><pre>go test -v main_test.go
+cd api
+go test -v start.go start_test.go
 </pre></div>
-- Hosted at vercel. See the test results from the last deployment at <a href="https://test-atomic-writes.vercel.app/test-output.log">https://test-atomic-writes.vercel.app/test-output.log</a>.</p>
+
+<h2 id="example-deployed-on-vercel">Example deployed on Vercel<a class="headerlink" href="#example-deployed-on-vercel" title="Permanent link"></a></h2>
+<ul>
+<li>See the test results from the last deployment at <a href="https://test-atomic-writes.vercel.app/test-output.log">https://test-atomic-writes.vercel.app/test-output.log</a>.</li>
+<li>See the build output from the last deployment at <a href="https://test-atomic-writes.vercel.app/build-output.log">https://test-atomic-writes.vercel.app/build-output.log</a>.</li>
+</ul>
 <h2 id="todo">Todo<a class="headerlink" href="#todo" title="Permanent link"></a></h2>
 <ul>
 <li>Fix api/start to call the test code properly. Currently just demonstrated by extracting go environment info and executing &ldquo;ls&rdquo; and &ldquo;pwd&rdquo;.</li>

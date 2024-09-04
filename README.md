@@ -2,7 +2,7 @@ test-atomic-writes
 ==================
 Test your filesystem's ability to correctly serialize writes as expected in APPEND mode on a POSIX system.
 
-## Tools and ideas:
+## Resources
 - [Visit Golang!](https://golang.org)
 - [Not the Wizard!](https://www.notthewizard.com/2014/06/17/are-files-appends-really-atomic)
 - [Stackoverflow file-append atomic question](http://stackoverflow.com/questions/1154446/is-file-append-atomic-in-unix)
@@ -25,13 +25,18 @@ Usage of ./test-atomic-writes:
   -worker int
     	worker: perform the writes, internal (default -1)
 ```
-Note: For readonly flag to work correctly the same arguments must be provided that created the file you wish to read.
+Note: The readonly switch also needs the identical parameters used to create the file.
 
 ## Test
 ```
 go test -v main_test.go
+cd api
+go test -v start.go start_test.go
 ```
-- Hosted at vercel. See the test results from the last deployment at https://test-atomic-writes.vercel.app/test-output.log.
+## Example deployed on Vercel
+
+- See the test results from the last deployment at https://test-atomic-writes.vercel.app/test-output.log.
+- See the build output from the last deployment at https://test-atomic-writes.vercel.app/build-output.log.
 
 ## Todo
 - Fix api/start to call the test code properly. Currently just demonstrated by extracting go environment info and executing "ls" and "pwd".
