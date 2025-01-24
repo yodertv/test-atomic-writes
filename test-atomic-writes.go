@@ -1,4 +1,4 @@
-// testatomicwrites implements a multi-writer test and validates the date writen to prove that atomic writes work as expected
+// test-atomic-writes implements a multi-writer test and validates the date writen to prove that atomic writes work as expected
 // in append mode on a posix compliant OS. I.e. each write is complete and not interleved with parralel writes.
 
 package main
