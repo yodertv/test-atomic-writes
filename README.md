@@ -26,6 +26,7 @@ Usage of ./test-atomic-writes:
     	worker: perform the writes, internal (default -1)
 ```
 Note: The readonly switch also needs the identical parameters used to create the file.
+Note: Shuffle express how interleved the workers output is with one another. It is the ratio of the times a message and its predecessor were written by different workers over the number of workers.
 
 ## Test
 ```
@@ -45,6 +46,10 @@ go test -v start.go start_test.go
 - Write in append mode in Mac OS X APFS doesn't appear to be atomic. Resolved 6.9.2018.
 
 ## Dev log
+
+### 10.28.2025
+- Picking up on being able to trigger the test from the api.
+
 ### 8.27.2024
 - Redeploying to vercel w/ Github integration.
 - Adjusting build.sh.

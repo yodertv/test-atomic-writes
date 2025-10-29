@@ -1,5 +1,6 @@
-// test-atomic-writes implements a multi-writer test and validates the date writen to prove that atomic writes work as expected
-// in append mode on a posix compliant OS. I.e. each write is complete and not interleved with parralel writes.
+// test-atomic-writes implements a multi-writer test and validates the data written
+// to prove that atomic writes work as expected in append mode on a posix compliant OS.
+// I.e. each write is complete and not interleved with parralel writes.
 
 package main
 
@@ -142,7 +143,7 @@ func main() {
 		return
 	}
 	if workers > 222 || workers < 1 || count < 1 || size < 2 {
-		fmt.Println("Between 1 and 222 workers, writing at least 1 each, of at least size 2 required to test.")
+		fmt.Println("Between 1 and 222 workers, writing at least 1 count each, of at least size 2 required to test.")
 		flag.Usage();
 		return
 	}

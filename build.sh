@@ -18,8 +18,8 @@ echo "mv README.html $DIST/index.html"
 mv README.html $DIST/index.html
 echo "go version = "
 go version
-echo "env = "
-env
+# echo "env = "
+# env
 echo "go env"
 go env
 echo "go mod init main"
