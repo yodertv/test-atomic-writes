@@ -6,13 +6,6 @@ mkdir -p $DIST
 export LOG_NAME=$DIST/build-output.log
 exec 1>>$LOG_NAME
 exec 2>&1
-yum --quiet upgrade
-yum install --assumeyes --quiet wget
-wget -q https://go.dev/dl/go1.23.0.linux-amd64.tar.gz
-tar -xzf go1.23.0.linux-amd64.tar.gz
-mv go /usr/local
-export GOROOT=/usr/local/go
-export PATH=$GOROOT/bin:$PATH
 echo "PWD = "$PWD
 echo "mv README.html $DIST/index.html"
 mv README.html $DIST/index.html
