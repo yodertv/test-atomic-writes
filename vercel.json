@@ -1,6 +1,6 @@
 {
   "name": "test-atomic-writes",
-  "version": "1.0.0",
+  "version": "1",
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "go build -o test-atomic-writes test-atomic-writes.go",
   "outputDirectory": "public"
