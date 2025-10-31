@@ -2,6 +2,6 @@
   "name": "test-atomic-writes",
   "version": "1.0.0",
   "scripts": {
-    "build": "go build -o test-atomic-writes test-atomic-writes.go" // Build a Go executable
+    "build": "go build -o test-atomic-writes test-atomic-writes.go"
   }
 }
