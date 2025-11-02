@@ -1101,7 +1101,8 @@ Usage of ./test-atomic-writes:
   -worker int
         worker: perform the writes, internal (default -1)
 </pre></div>
-Note: The readonly switch also needs the identical parameters used to create the file.</p>
+Note: The readonly switch also needs the identical parameters used to create the file.
+Note: Shuffle express how interleved the workers output is with one another. It is the ratio of the times a message and its predecessor were written by different workers over the number of workers.</p>
 <h2 id="test">Test<a class="headerlink" href="#test" title="Permanent link"></a></h2>
 <div class="highlight"><pre>go test -v main_test.go
 cd api
@@ -1122,6 +1123,10 @@ go test -v start.go start_test.go
 <li>Write in append mode in Mac OS X APFS doesn&rsquo;t appear to be atomic. Resolved 6.9.2018.</li>
 </ul>
 <h2 id="dev-log">Dev log<a class="headerlink" href="#dev-log" title="Permanent link"></a></h2>
+<h3 id="10282025">10.28.2025<a class="headerlink" href="#10282025" title="Permanent link"></a></h3>
+<ul>
+<li>Picking up on being able to trigger the test from the api.</li>
+</ul>
 <h3 id="8272024">8.27.2024<a class="headerlink" href="#8272024" title="Permanent link"></a></h3>
 <ul>
 <li>Redeploying to vercel w/ Github integration.</li>

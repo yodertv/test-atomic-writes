@@ -21,26 +21,26 @@ func Handler(w http.ResponseWriter, r *http.Request) {
     name, err = os.Getwd() 
     fmt.Fprintf(w, "%s, %v\n", name, err)
 
-/*
     // This idea doesn't work in vercel. I can't put executables into the api directory and the api 
     // directory can't see any of the public files served by the vercel run-time.
-	var cmdName string = "./test-atomic-writes"
+	var cmdName string = "../test-atomic-writes"
     var cmdArgs []string = []string{}
     var cmd *exec.Cmd = cmdMake(w, cmdName, cmdArgs)
 	err = cmd.Start()
     if err != nil { fmt.Fprintf(w, "Start failed for command %s %s: %v\n", cmdName, cmdArgs, err) }
 	err = cmd.Wait()
     if err != nil { fmt.Fprintf(w, "Wait failed for command %s %s: %v\n",cmdName, cmdArgs, err) }
- */
-    cmdName := "pwd"
-    cmdArgs := []string{}
-    cmd := cmdMake(w, cmdName, cmdArgs)
+
+    cmdName = "pwd"
+    cmdArgs = []string{}
+    cmd = cmdMake(w, cmdName, cmdArgs)
     err = cmd.Start()
     if err != nil { fmt.Fprintf(w, "Start failed for command %s %s: %v\n", cmdName, cmdArgs, err) }
     err = cmd.Wait()
     if err != nil { fmt.Fprintf(w, "Wait failed for command %s %s: %v\n",cmdName, cmdArgs, err) }
-    cmdName = "ls"
-    cmdArgs = []string{"-la", "/", ".", ".."}
+
+    cmdName = "cat"
+    cmdArgs = []string{"../LICENSE"}
     cmd = cmdMake(w, cmdName, cmdArgs)
     err = cmd.Start()
     if err != nil { fmt.Fprintf(w, "Start failed for command %s %s: %v\n", cmdName, cmdArgs, err) }

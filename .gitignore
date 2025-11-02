@@ -1,7 +1,6 @@
 .vercel
 out.tmp
 test-atomic-writes
-pkg/
-go.mod
+pkg
 public
-
+go.work
