@@ -47,6 +47,10 @@ go test -v start.go start_test.go
 
 ## Dev log
 
+### 11.02.2025
+- Sorted out local, vercel dev, and vercel using go.work and upgrading go.
+- Ready to iterate on getting test-atomic-writes to be triggered by HTTP.
+
 ### 10.28.2025
 - Picking up on being able to trigger the test from the api.
 
