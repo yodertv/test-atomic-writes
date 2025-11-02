@@ -1,6 +1,5 @@
 {
-  "name": "test-atomic-writes",
-  "version": "1",
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "./build.sh",
   "outputDirectory": "public"
 }
