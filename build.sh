@@ -7,8 +7,8 @@ export LOG_NAME=$DIST/build-output.log
 exec 1>>$LOG_NAME
 exec 2>&1
 echo "PWD = "$PWD
-echo "mv README.html $DIST/index.html"
-mv README.html $DIST/index.html
+echo "cp -p README.html $DIST/index.html"
+cp -p README.html $DIST/index.html
 echo "go version = "
 go version
 # echo "env = "
