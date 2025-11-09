@@ -11,10 +11,6 @@ echo "cp -p README.html $DIST/index.html"
 cp -p README.html $DIST/index.html
 echo "go version = "
 go version
-# echo "env = "
-# env
-echo "go env"
-go env
 echo "go mod init main"
 go mod init main
 echo "go mod tidy"
