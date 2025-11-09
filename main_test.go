@@ -46,3 +46,15 @@ func TestAtomicWrites(t *testing.T){
 	err = cmd.Wait()
 	if err != nil { t.Errorf("Wait failed: %v\n", err) }
 }
+
+// TestReadOnly runs the cmdline executable with default arguments readonly.
+// Todo: This test panics when run before TestAtomicWrites ever has. Should simply fail instead.
+func TestReadOnly(t *testing.T){
+	cmdString := "./test-atomic-writes"
+	cmdArgs := []string{"-readonly"}
+    cmd := cmdMake(cmdString, cmdArgs)
+	err := cmd.Start()
+	if err != nil { t.Errorf("%s cmd start failed: %v\n", cmdString, err) }
+	err = cmd.Wait()
+	if err != nil { t.Errorf("Wait failed: %v\n", err) }
+}

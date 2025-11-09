@@ -1,8 +1,8 @@
-// test-atomic-writes implements a multi-writer test and validates the data written
+// test-atomic-writes.go implements a multi-writer test and validates the data written
 // to prove that atomic writes work as expected in append mode on a posix compliant OS.
 // I.e. each write is complete and not interleved with parralel writes.
 
-package test_atomic_writes
+package api
 
 import (
 	"os"
@@ -120,7 +120,7 @@ func close_log (fd int, file string){
 	// syscall.Unlink(file)
 }
 
-func Write_bytes (count int, size int, workers int, worker int, readonly bool, filename string) {
+func Write_bytes (count int, size int, workers int, worker int, filename string) {
 	// As a worker append cnt messages unique to the worker.
 	if worker > -1 {
 		fd, err := open_file(filename)
@@ -142,26 +142,24 @@ func Write_bytes (count int, size int, workers int, worker int, readonly bool, f
 	} else {
 		// As the parent start the workers with shared IO, wait for them, and test the results.
 		err := error(nil)
-		if (!readonly){
-			attr := syscall.ProcAttr{Dir: "", Env: nil, Files: []uintptr{ 0, 1, 2 }, Sys: nil} // stdin, out, err passed to child.
-			wstatus := syscall.WaitStatus(0)
-			rusage := syscall.Rusage{}
-			pids := make([]int, workers)
-			options := int(0)
-			syscall.Unlink(filename)
-			os.Args = append(os.Args, []string{ "-worker", "0" } ...)
-			for i:=0 ; i < workers ; i++ {
-				workerNumber := fmt.Sprintf("%d", i)
-				os.Args[len(os.Args) - 1] = workerNumber
-				pids[i], err = syscall.ForkExec(os.Args[0], os.Args[:], &attr)
-				check(err)
-			}
-			fmt.Printf("Each line of file %s will be %d bytes, written by %d workers, writing %d lines each.\n", filename, size, workers, count)
-			// wait for them all to finish
-			for i:=0 ; i < workers ; i++ {
-				_, err := syscall.Wait4(pids[i], &wstatus, options, &rusage)
-				check(err)
-			}
+		attr := syscall.ProcAttr{Dir: "", Env: nil, Files: []uintptr{ 0, 1, 2 }, Sys: nil} // stdin, out, err passed to child.
+		wstatus := syscall.WaitStatus(0)
+		rusage := syscall.Rusage{}
+		pids := make([]int, workers)
+		options := int(0)
+		syscall.Unlink(filename)
+		os.Args = append(os.Args, []string{ "-worker", "0" } ...)
+		for i:=0 ; i < workers ; i++ {
+			workerNumber := fmt.Sprintf("%d", i)
+			os.Args[len(os.Args) - 1] = workerNumber
+			pids[i], err = syscall.ForkExec(os.Args[0], os.Args[:], &attr)
+			check(err)
+		}
+		fmt.Printf("Each line of file %s will be %d bytes, written by %d workers, writing %d lines each.\n", filename, size, workers, count)
+		// wait for them all to finish
+		for i:=0 ; i < workers ; i++ {
+			_, err := syscall.Wait4(pids[i], &wstatus, options, &rusage)
+			check(err)
 		}
 	}
 }

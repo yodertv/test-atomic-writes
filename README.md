@@ -45,6 +45,9 @@ go test -v start.go start_test.go
 ## Resolved Issues
 - Write in append mode in Mac OS X APFS doesn't appear to be atomic. Resolved 6.9.2018.
 
+## Backlog
+- TestReadOnly panics when run before TestAtomicWrites ever has. Should simply fail instead.
+
 ## Dev log
 
 ### 11.02.2025
