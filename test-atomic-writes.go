@@ -23,9 +23,9 @@ func main() {
 	    filename string
 	)
     flag.StringVar(&filename, "f", "out.tmp", "f(ilename) to use for test")
-    flag.IntVar(&count, "c", 10, "c(ount): of writes per worker, use at least 1")
+    flag.IntVar(&count, "c", 500, "c(ount): of writes per worker, use at least 1")
     flag.IntVar(&size, "s", 30, "s(size): in bytes to write, use at least 2")
-    flag.IntVar(&workers, "w", 4, "w(orkers): number of concurent writers, use at least 1 and no more than 222")
+    flag.IntVar(&workers, "w", 50, "w(orkers): number of concurent writers, use at least 1 and no more than 222")
     flag.BoolVar(&readonly, "readonly", false, "readonly: just run the validate function, use identical flags")
     flag.IntVar(&worker, "worker", -1, "worker: perform the writes, internal")
     flag.Parse()
@@ -38,8 +38,9 @@ func main() {
 		flag.Usage();
 		os.Exit(1)
 	}
+
 	if (!readonly){
-		// Note that this function fork a process for each worker.
+		// Note that this function forks a process for each worker.
 		api.Write_bytes(count, size, workers, worker, filename)
     }
     if worker == -1 { // The orchestrating process has worker index = -1. Only need to validate the file once after all the workers finish.
