@@ -1114,15 +1114,19 @@ go test -v start.go start_test.go
 <li>See the test results from the last deployment at <a href="https://test-atomic-writes.vercel.app/test-output.log">https://test-atomic-writes.vercel.app/test-output.log</a>.</li>
 <li>See the build output from the last deployment at <a href="https://test-atomic-writes.vercel.app/build-output.log">https://test-atomic-writes.vercel.app/build-output.log</a>.</li>
 </ul>
-<h2 id="todo">Todo<a class="headerlink" href="#todo" title="Permanent link"></a></h2>
+<h2 id="backlog">Backlog<a class="headerlink" href="#backlog" title="Permanent link"></a></h2>
 <ul>
 <li>Fix api/start to call the test code properly. Currently just demonstrated by extracting go environment info and executing &ldquo;ls&rdquo; and &ldquo;pwd&rdquo;.</li>
+<li>TestReadOnly panics when run before TestAtomicWrites ever has. Should simply fail instead.</li>
 </ul>
 <h2 id="resolved-issues">Resolved Issues<a class="headerlink" href="#resolved-issues" title="Permanent link"></a></h2>
 <ul>
 <li>Write in append mode in Mac OS X APFS doesn&rsquo;t appear to be atomic. Resolved 6.9.2018.</li>
 </ul>
-<h2 id="dev-log">Dev log<a class="headerlink" href="#dev-log" title="Permanent link"></a></h2>
+<h3 id="11092025">11.09.2025<a class="headerlink" href="#11092025" title="Permanent link"></a></h3>
+<ul>
+<li>Iterating on test-atomic-writes and vercel serverless functions and testing w/ forking code. Fun times!</li>
+</ul>
 <h3 id="11022025">11.02.2025<a class="headerlink" href="#11022025" title="Permanent link"></a></h3>
 <ul>
 <li>Sorted out local, vercel dev, and vercel using go.work and upgrading go.</li>
