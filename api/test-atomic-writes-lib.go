@@ -7,6 +7,7 @@ package api
 import (
 	"os"
 	"fmt"
+	"flag"
 	"syscall"
 )
 
@@ -140,7 +141,7 @@ func Write_bytes (count int, size int, workers int, worker int, filename string)
 			}
 		}
 	} else {
-		// As the parent start the workers with shared IO, wait for them, and test the results.
+		// As the parent, start the workers with shared IO, wait for them, and test the results.
 		err := error(nil)
 		attr := syscall.ProcAttr{Dir: "", Env: nil, Files: []uintptr{ 0, 1, 2 }, Sys: nil} // stdin, out, err passed to child.
 		wstatus := syscall.WaitStatus(0)
@@ -152,6 +153,7 @@ func Write_bytes (count int, size int, workers int, worker int, filename string)
 		for i:=0 ; i < workers ; i++ {
 			workerNumber := fmt.Sprintf("%d", i)
 			os.Args[len(os.Args) - 1] = workerNumber
+			fmt.Printf("Args = [%v]\n", os.Args)
 			pids[i], err = syscall.ForkExec(os.Args[0], os.Args[:], &attr)
 			check(err)
 		}
@@ -162,4 +164,28 @@ func Write_bytes (count int, size int, workers int, worker int, filename string)
 			check(err)
 		}
 	}
+}
+
+type Cmdline_args struct {
+	Count, Size, Workers, Worker int
+	Readonly bool
+	Filename string
+}
+
+// Handle comandline arguments. Main of this library needs to Init() or parse flags to handle the case
+// where this process is a worker in the test.
+func Parse_args(cl *Cmdline_args) {
+    flag.CommandLine.Init(os.Args[0], flag.ContinueOnError)
+    flag.StringVar(&cl.Filename, "f", "testdata", "f(ilename) to use for test")
+    flag.IntVar(&cl.Count, "c", 50, "c(ount): of writes per worker, use at least 1")
+    flag.IntVar(&cl.Size, "s", 4096, "s(size): in bytes to write, use at least 2")
+    flag.IntVar(&cl.Workers, "w", 3, "w(orkers): number of concurent writers, use at least 1 and no more than 222")
+    flag.BoolVar(&cl.Readonly, "readonly", false, "readonly: just run the validate function, use identical flags")
+    flag.IntVar(&cl.Worker, "worker", -1, "worker: perform the writes, internal")
+    flag.Parse()
+    if cl.Workers > 222 || cl.Workers < 1 || cl.Count < 1 || cl.Size < 2 {
+        fmt.Println("Between 1 and 222 workers, writing at least 1 count each, of at least size 2 required to test.")
+        os.Exit(1) // This is fatal.
+    }
+    return
 }

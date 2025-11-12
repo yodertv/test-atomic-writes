@@ -4,3 +4,4 @@ test-atomic-writes
 pkg
 public
 go.work
+testdata
