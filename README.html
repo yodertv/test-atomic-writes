@@ -1104,9 +1104,9 @@ Usage of ./test-atomic-writes:
 Note: The readonly switch also needs the identical parameters used to create the file.
 Note: Shuffle express how interleved the workers output is with one another. It is the ratio of the times a message and its predecessor were written by different workers over the number of workers.</p>
 <h2 id="test">Test<a class="headerlink" href="#test" title="Permanent link"></a></h2>
-<div class="highlight"><pre>go test -v main_test.go
-cd api
-go test -v start.go start_test.go
+<div class="highlight"><pre>go build test-atomic-writes.go
+go test -v main_test.go
+go test -v ./api
 </pre></div>
 
 <h2 id="example-deployed-on-vercel">Example deployed on Vercel<a class="headerlink" href="#example-deployed-on-vercel" title="Permanent link"></a></h2>

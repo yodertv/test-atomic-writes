@@ -30,9 +30,9 @@ Note: Shuffle express how interleved the workers output is with one another. It 
 
 ## Test
 ```
+go build test-atomic-writes.go
 go test -v main_test.go
-cd api
-go test -v start.go start_test.go
+go test -v ./api
 ```
 ## Example deployed on Vercel
 
