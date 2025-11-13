@@ -69,6 +69,10 @@ func Validate_bytes(path string, count int, size int, workers int) int {
 	err = syscall.Fstat(fd, &stat)
 	check(err)
 	filesize := int(stat.Size)
+	if filesize == 0 {
+		fmt.Printf("Validate_bytes: filesize missmatch: filesize=%d expected file size > %d\n", filesize, 0)
+		return 1
+	}
 	efs := count * size * workers
 	emc := count * workers
 	d, err := map_log(fd, int(filesize))
@@ -81,21 +85,21 @@ func Validate_bytes(path string, count int, size int, workers int) int {
 	byteCount := 1
 	if filesize != efs {
 		errCnt++
-		fmt.Printf("validate: filesize missmatch: filesize=%d expected file size=%d\n", filesize, efs)
+		fmt.Printf("Validate_bytes: filesize missmatch: filesize=%d expected file size=%d\n", filesize, efs)
 	}
 	for i := 1 ; i < filesize ; i++ {
 		if lastByte == d[i] {
 			byteCount++
 		} else if d[i] != '\n' {
 			errCnt++
-			fmt.Printf("validate: interleaved write: errCnt=%d byteCount=%d, size%d, msgSrcChangeCnt=%d\n", errCnt, byteCount, size, msgSrcChangeCnt)
+			fmt.Printf("Validate_bytes: interleaved write: errCnt=%d byteCount=%d, size%d, msgSrcChangeCnt=%d\n", errCnt, byteCount, size, msgSrcChangeCnt)
 		} else {
 			i++
 			msgCnt++
 			byteCount++
 			if byteCount != size {
 				errCnt++
-				fmt.Printf("validate: bad messages size: byteCount=%d, size=%d\n", byteCount, size)
+				fmt.Printf("Validate_bytes: bad messages size: byteCount=%d, size=%d\n", byteCount, size)
 			}
 			if i == filesize { break }
 			if lastMsg != d[i] {
@@ -108,10 +112,10 @@ func Validate_bytes(path string, count int, size int, workers int) int {
 		lastMsg = lastByte
 	}
 	if msgCnt != emc {
-		fmt.Printf("validate: missed messages: msgCnt=%d expected=%d difference=%d\n", msgCnt, emc, emc - msgCnt)
+		fmt.Printf("Validate_bytes: missed messages: msgCnt=%d expected=%d difference=%d\n", msgCnt, emc, emc - msgCnt)
 		errCnt++
 	}
-	fmt.Printf("validate: source changes=%d shuffle=%.2f msgCnt=%d errCnt=%d\n", msgSrcChangeCnt, float32(msgSrcChangeCnt)/float32(workers), msgCnt, errCnt)
+	fmt.Printf("Validate_bytes: source changes=%d shuffle=%.2f msgCnt=%d errCnt=%d\n", msgSrcChangeCnt, float32(msgSrcChangeCnt)/float32(workers), msgCnt, errCnt)
 	return (errCnt)
 }
 
@@ -153,7 +157,6 @@ func Write_bytes (count int, size int, workers int, worker int, filename string)
 		for i:=0 ; i < workers ; i++ {
 			workerNumber := fmt.Sprintf("%d", i)
 			os.Args[len(os.Args) - 1] = workerNumber
-			fmt.Printf("Args = [%v]\n", os.Args)
 			pids[i], err = syscall.ForkExec(os.Args[0], os.Args[:], &attr)
 			check(err)
 		}
