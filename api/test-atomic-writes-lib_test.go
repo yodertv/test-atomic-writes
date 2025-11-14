@@ -3,7 +3,6 @@
 package api
 
 import (
-    "os"
 	"testing"
 )
 
@@ -16,13 +15,11 @@ var (
 func TestMain(m *testing.M) {
     // Initialize test
     Parse_args(&cl)
-    
     // Run all tests and capture the result, res, only in the paraent executable.
     if cl.Worker == -1 { // The orchestrating process has worker index = -1.
         res = m.Run()
     }
-    // Exit with the test result code
-    os.Exit(res)
+    return
 }
 
 func TestAtomicWrites(t *testing.T) {
@@ -41,6 +38,6 @@ func TestAtomicWrites(t *testing.T) {
 func TestReadOnly(t *testing.T) {
     res = Validate_bytes(cl.Filename, cl.Count, cl.Size, cl.Workers)
     if (res != 0) {
-        t.Errorf("validate_bytes returned non zero status")
+        t.Errorf("Validate_bytes returned non zero status")
     }
 }

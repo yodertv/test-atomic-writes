@@ -1117,11 +1117,20 @@ go test -v ./api
 <h2 id="backlog">Backlog<a class="headerlink" href="#backlog" title="Permanent link"></a></h2>
 <ul>
 <li>Fix api/start to call the test code properly. Currently just demonstrated by extracting go environment info and executing &ldquo;ls&rdquo; and &ldquo;pwd&rdquo;.</li>
-<li>TestReadOnly panics when run before TestAtomicWrites ever has. Should simply fail instead.</li>
+<li>Make a test for the library. Doesn&rsquo;t work because test tooling needs ForkExec so breaks. Need to use the go primitives f</li>
 </ul>
 <h2 id="resolved-issues">Resolved Issues<a class="headerlink" href="#resolved-issues" title="Permanent link"></a></h2>
 <ul>
 <li>Write in append mode in Mac OS X APFS doesn&rsquo;t appear to be atomic. Resolved 6.9.2018.</li>
+<li>TestReadOnly panics when run before TestAtomicWrites ever has. Should simply fail instead. Resolved 11.12.2025</li>
+</ul>
+<h3 id="11142025">11.14.2025<a class="headerlink" href="#11142025" title="Permanent link"></a></h3>
+<ul>
+<li>Giving up on making a successful test for this library. Despite replacing ForkExec() with exec.Start() and Wait(). Code is simpler, but testing still fails. The main executable works correctly. Giving up on a test program for this library for now.</li>
+</ul>
+<h3 id="11122025">11.12.2025<a class="headerlink" href="#11122025" title="Permanent link"></a></h3>
+<ul>
+<li>Fixed: TestReadOnly panics when run before TestAtomicWrites ever has. Should simply fail instead.</li>
 </ul>
 <h3 id="11092025">11.09.2025<a class="headerlink" href="#11092025" title="Permanent link"></a></h3>
 <ul>

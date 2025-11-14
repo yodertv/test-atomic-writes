@@ -41,10 +41,17 @@ go test -v ./api
 
 ## Backlog
 - Fix api/start to call the test code properly. Currently just demonstrated by extracting go environment info and executing "ls" and "pwd".
-- TestReadOnly panics when run before TestAtomicWrites ever has. Should simply fail instead.
+- Make a test for the library. Doesn't work because test tooling needs ForkExec so breaks. Need to use the go primitives f
 
 ## Resolved Issues
 - Write in append mode in Mac OS X APFS doesn't appear to be atomic. Resolved 6.9.2018.
+- TestReadOnly panics when run before TestAtomicWrites ever has. Should simply fail instead. Resolved 11.12.2025
+
+### 11.14.2025
+- Giving up on making a successful test for this library. Despite replacing ForkExec() with exec.Start() and Wait(). Code is simpler, but testing still fails. The main executable works correctly. Giving up on a test program for this library for now.
+
+### 11.12.2025
+- Fixed: TestReadOnly panics when run before TestAtomicWrites ever has. Should simply fail instead.
 
 ### 11.09.2025
 - Iterating on test-atomic-writes and vercel serverless functions and testing w/ forking code. Fun times!

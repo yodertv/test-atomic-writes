@@ -6,6 +6,7 @@ package api
 
 import (
 	"os"
+	"os/exec"
 	"fmt"
 	"flag"
 	"syscall"
@@ -126,7 +127,7 @@ func close_log (fd int, file string){
 }
 
 func Write_bytes (count int, size int, workers int, worker int, filename string) {
-	// As a worker append cnt messages unique to the worker.
+	// As a worker append count messages unique to the worker.
 	if worker > -1 {
 		fd, err := open_file(filename)
 		check(err)
@@ -145,25 +146,24 @@ func Write_bytes (count int, size int, workers int, worker int, filename string)
 			}
 		}
 	} else {
-		// As the parent, start the workers with shared IO, wait for them, and test the results.
 		err := error(nil)
-		attr := syscall.ProcAttr{Dir: "", Env: nil, Files: []uintptr{ 0, 1, 2 }, Sys: nil} // stdin, out, err passed to child.
-		wstatus := syscall.WaitStatus(0)
-		rusage := syscall.Rusage{}
-		pids := make([]int, workers)
-		options := int(0)
+		// Start clean, by removing the existing file.
 		syscall.Unlink(filename)
+		cmds := make([] *exec.Cmd, workers)
 		os.Args = append(os.Args, []string{ "-worker", "0" } ...)
+		// As the parent, start the workers with shared IO, wait for them, and test the results.
 		for i:=0 ; i < workers ; i++ {
 			workerNumber := fmt.Sprintf("%d", i)
 			os.Args[len(os.Args) - 1] = workerNumber
-			pids[i], err = syscall.ForkExec(os.Args[0], os.Args[:], &attr)
+			cmds[i] = exec.Command(os.Args[0], os.Args[1:]...)
+			err = cmds[i].Start()
+			// fmt.Printf("started pid:%d err:%v\n", cmds[i].Process.Pid, err)
 			check(err)
 		}
 		fmt.Printf("Each line of file %s will be %d bytes, written by %d workers, writing %d lines each.\n", filename, size, workers, count)
-		// wait for them all to finish
+		// wait for each of them to finish
 		for i:=0 ; i < workers ; i++ {
-			_, err := syscall.Wait4(pids[i], &wstatus, options, &rusage)
+			err = cmds[i].Wait()
 			check(err)
 		}
 	}
