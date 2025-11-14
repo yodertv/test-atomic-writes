@@ -17,9 +17,9 @@ func Handler(w http.ResponseWriter, r *http.Request) {
     fmt.Fprintf(w, "%#v\n", runtime.GOOS)
     fmt.Fprintf(w, "pagesize=%d\n", syscall.Getpagesize())
     name, err := os.Hostname()
-    fmt.Fprintf(w, "%s, %v\n", name, err)
+    fmt.Fprintf(w, "Hostname=%s, err=%v\n", name, err)
     name, err = os.Getwd() 
-    fmt.Fprintf(w, "%s, %v\n", name, err)
+    fmt.Fprintf(w, "Working directory=%s, err=%v\n", name, err)
 
     // This idea doesn't work in vercel. I can't put executables into the api directory and the api 
     // directory can't see any of the public files served by the vercel run-time.
