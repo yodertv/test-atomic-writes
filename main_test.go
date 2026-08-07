@@ -1,6 +1,6 @@
 // main_test.go
 //
-// Test the pscat utility
+// Test the test-atomic-writes utility.
 //
 package main
 

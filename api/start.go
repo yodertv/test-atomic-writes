@@ -11,6 +11,8 @@ import (
     "net/http"
 )
 
+var args = Cmdline_args{ 50, 4096, 3, -1, false, "testdata" }
+
 func Handler(w http.ResponseWriter, r *http.Request) {
     currentTime := time.Now().Format(time.RFC850)
     fmt.Fprintf(w, "%v\n", currentTime)
@@ -21,22 +23,15 @@ func Handler(w http.ResponseWriter, r *http.Request) {
     name, err = os.Getwd() 
     fmt.Fprintf(w, "Working directory=%s, err=%v\n", name, err)
 
-    // This idea doesn't work in vercel. I can't put executables into the api directory and the api 
-    // directory can't see any of the public files served by the vercel run-time.
-	var cmdName string = "../test-atomic-writes"
+    // The idea to fork an executable doesn't work in vercel. I can't put executables into the api directory and the api
+    // directory can't see any of the public files served by the vercel run-time. Which makes sense from a security perspective.
+	// var cmdName string = "../test-atomic-writes"
+    var cmdName = "pwd"
     var cmdArgs []string = []string{}
     var cmd *exec.Cmd = cmdMake(w, cmdName, cmdArgs)
 	err = cmd.Start()
     if err != nil { fmt.Fprintf(w, "Start failed for command %s %s: %v\n", cmdName, cmdArgs, err) }
 	err = cmd.Wait()
-    if err != nil { fmt.Fprintf(w, "Wait failed for command %s %s: %v\n",cmdName, cmdArgs, err) }
-
-    cmdName = "pwd"
-    cmdArgs = []string{}
-    cmd = cmdMake(w, cmdName, cmdArgs)
-    err = cmd.Start()
-    if err != nil { fmt.Fprintf(w, "Start failed for command %s %s: %v\n", cmdName, cmdArgs, err) }
-    err = cmd.Wait()
     if err != nil { fmt.Fprintf(w, "Wait failed for command %s %s: %v\n",cmdName, cmdArgs, err) }
 
     cmdName = "cat"
@@ -46,6 +41,9 @@ func Handler(w http.ResponseWriter, r *http.Request) {
     if err != nil { fmt.Fprintf(w, "Start failed for command %s %s: %v\n", cmdName, cmdArgs, err) }
     err = cmd.Wait()
     if err != nil { fmt.Fprintf(w, "Wait failed for command %s %s: %v\n",cmdName, cmdArgs, err) }
+
+    res := Validate_bytes(args.Filename, args.Count, args.Size, args.Workers)
+    fmt.Fprintf(w, "Validate_bytes returned: %d\n", res)
 }
 
 // cmdMake returns an exec.Cmd with the command s set up to be started or run with args.
