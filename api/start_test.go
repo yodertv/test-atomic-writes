@@ -1,11 +1,13 @@
 // start_test.go
 
-package api
+package api_test
 
 import (
 	"testing"
 	"net/http"
     "net/http/httptest"
+
+    "github.com/yodertv/test-atomic-writes/api"
 )
 
 func TestAtomicWritesHandler(t *testing.T) {
@@ -17,7 +19,7 @@ func TestAtomicWritesHandler(t *testing.T) {
     }
     // We create a ResponseRecorder (which satisfies http.ResponseWriter) to record the response.
     rr := httptest.NewRecorder()
-    hndlr := http.HandlerFunc(Handler)
+    hndlr := http.HandlerFunc(api.Handler)
 
     // Our handlers satisfy http.Handler, so we can call their ServeHTTP method
     // directly and pass in our Request and ResponseRecorder.

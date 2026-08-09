@@ -7,7 +7,15 @@ package main
 import (
 	"os"
 	"os/exec"
+	"fmt"
 	"testing"
+
+	"github.com/yodertv/test-atomic-writes/lib"
+)
+
+var (
+    res = 0
+    cl = lib.Cmdline_args{}
 )
 
 // tCheck is a helper function for fatal tests
@@ -18,12 +26,47 @@ func tCheck(e error, t *testing.T) {
     }
 }
 
+// This test requires a main to parse args and perform worker tasks.
+func TestMain(m *testing.M) {
+    fmt.Printf("Entering TestMain...\n")
+    // Initialize test
+    lib.Parse_args(&cl)
+    // Run all tests and capture the result, res, only in the parent executable.
+    if cl.Worker == -1 { // The orchestrating process has worker index = -1.
+        res = m.Run()
+    }
+    fmt.Printf("Exiting TestMain...")
+    return
+}
+
+func TestAtomicWrites(t *testing.T) {
+    if !cl.Readonly {
+        // Note that this function forks a process for each worker.
+        lib.Write_bytes(cl.Count, cl.Size, cl.Workers, cl.Worker, cl.Filename)
+    }
+    if cl.Worker == -1 { // The orchestrating process has worker index = -1. Only need to validate the file once after all the workers finish.
+        res = lib.Validate_bytes(cl.Filename, cl.Count, cl.Size, cl.Workers)
+    }
+    if (res != 0) {
+        t.Errorf("Validate_bytes returned non zero status: %d.", res)
+    }
+}
+
+// Just validate an existing file. Fails if arguments are different from those used when the file was produced.
+func TestReadOnly(t *testing.T) {
+    res = lib.Validate_bytes(cl.Filename, cl.Count, cl.Size, cl.Workers)
+    if (res != 0) {
+        t.Errorf("Validate_bytes returned non zero status")
+    }
+}
+
 // cmdMake returns an exec.Cmd with the command s set up to be started or run with the args.
 // It copies the io of the parent. It marks the environment with a "TESTING" flag.
 // Should the command care to check for the flag, it could do so like:
 //    if os.Getenv("CMD_IN_PROGRESS") == "1" {
 //       fmt.Println("CMD in progress.")
 //    }
+// Needed to run tests of the utility command produced, test-atomic-writes.
 func cmdMake(s string, args []string) *exec.Cmd {
     env := []string{
 		"CMD_IN_PROGRESS=1",
@@ -36,8 +79,8 @@ func cmdMake(s string, args []string) *exec.Cmd {
     return cmd
 }
 
-// TestAtomicWrites runs the cmdline executable with default arguments
-func TestAtomicWrites(t *testing.T){
+// TestAtomicWritesExec runs the cmdline executable with default arguments
+func TestAtomicWritesExec(t *testing.T){
 	cmdString := "./test-atomic-writes"
 	cmdArgs := []string{}
     cmd := cmdMake(cmdString, cmdArgs)
@@ -47,9 +90,9 @@ func TestAtomicWrites(t *testing.T){
 	if err != nil { t.Errorf("Wait failed: %v\n", err) }
 }
 
-// TestReadOnly runs the cmdline executable with default arguments readonly.
+// TestReadOnlyExec runs the cmdline executable with default arguments readonly.
 // Todo: This test panics when run before TestAtomicWrites ever has. Should simply fail instead.
-func TestReadOnly(t *testing.T){
+func TestReadOnlyExec(t *testing.T){
 	cmdString := "./test-atomic-writes"
 	cmdArgs := []string{"-readonly"}
     cmd := cmdMake(cmdString, cmdArgs)

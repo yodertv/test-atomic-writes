@@ -2,7 +2,7 @@
 // to prove that atomic writes work as expected in append mode on a posix compliant OS.
 // I.e. each write is complete and not interleved with parralel writes.
 
-package api
+package lib
 
 import (
 	"os"
@@ -157,7 +157,7 @@ func Write_bytes (count int, size int, workers int, worker int, filename string)
 			os.Args[len(os.Args) - 1] = workerNumber
 			cmds[i] = exec.Command(os.Args[0], os.Args[1:]...)
 			err = cmds[i].Start()
-			// fmt.Printf("started pid:%d err:%v\n", cmds[i].Process.Pid, err)
+			fmt.Printf("started pid:%d err:%v\n", cmds[i].Process.Pid, err)
 			check(err)
 		}
 		fmt.Printf("Each line of file %s will be %d bytes, written by %d workers, writing %d lines each.\n", filename, size, workers, count)

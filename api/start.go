@@ -9,9 +9,10 @@ import (
     "runtime"
     "os/exec"
     "net/http"
+    "github.com/yodertv/test-atomic-writes/lib"
 )
 
-var args = Cmdline_args{ 50, 4096, 3, -1, false, "testdata" }
+var args = lib.Cmdline_args{ 50, 4096, 3, -1, false, "testdata" }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
     currentTime := time.Now().Format(time.RFC850)
@@ -42,7 +43,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
     err = cmd.Wait()
     if err != nil { fmt.Fprintf(w, "Wait failed for command %s %s: %v\n",cmdName, cmdArgs, err) }
 
-    res := Validate_bytes(args.Filename, args.Count, args.Size, args.Workers)
+    res := lib.Validate_bytes(args.Filename, args.Count, args.Size, args.Workers)
     fmt.Fprintf(w, "Validate_bytes returned: %d\n", res)
 }
 
