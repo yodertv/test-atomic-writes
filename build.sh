@@ -6,10 +6,10 @@ mkdir -p $DIST
 export LOG_NAME=$DIST/build-output.log
 exec 1>>$LOG_NAME
 exec 2>&1
+date
 echo "PWD = "$PWD
 echo "cp -p README.html $DIST/index.html"
 cp -p README.html $DIST/index.html
-echo "go version = "
 go version
 echo "go mod init main"
 go mod init main

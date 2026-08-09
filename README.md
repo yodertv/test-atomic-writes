@@ -28,11 +28,13 @@ Usage of ./test-atomic-writes:
 Note: The readonly switch also needs the identical parameters used to create the file.
 Note: Shuffle express how interleved the workers output is with one another. It is the ratio of the times a message and its predecessor were written by different workers over the number of workers.
 
-## Test
+## Build and Test
 ```
-go build test-atomic-writes.go
+./build.sh
+pushd api ; go test -v . ; popd
+pushd lib ; go test -v . ; popd
 go test -v main_test.go
-go test -v ./api
+./test-atomic-writes
 ```
 ## Example deployed on Vercel
 
@@ -41,11 +43,16 @@ go test -v ./api
 
 ## Backlog
 - Fix api/start to call the test code properly. Currently just demonstrated by extracting go environment info and executing "ls" and "pwd".
-- Make a test for the library. Doesn't work because test tooling needs ForkExec so breaks. Need to use the go primitives f
+- Make a test for the library. Doesn't work because test tooling needs ForkExec so breaks. Need to use the go primitives.
 
 ## Resolved Issues
 - Write in append mode in Mac OS X APFS doesn't appear to be atomic. Resolved 6.9.2018.
 - TestReadOnly panics when run before TestAtomicWrites ever has. Should simply fail instead. Resolved 11.12.2025
+
+### 08.09.2026 (d3202d2)
+- Working on a go lambda function to host an online test-atomic-writes service.
+- Learned from gemini that each file in the api directory must have a handler. Nothing else is compiled.
+- Factored out library code (lib module) into lib directory to solve compilation issues on vercel.
 
 ### 11.14.2025
 - Giving up on making a successful test for this library. Despite replacing ForkExec() with exec.Start() and Wait(). Code is simpler, but testing still fails. The main executable works correctly. Giving up on a test program for this library for now.
