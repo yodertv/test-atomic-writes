@@ -2,7 +2,7 @@
 //
 // Test the test-atomic-writes utility.
 //
-package main
+package main_test
 
 import (
 	"os"

@@ -6,7 +6,6 @@ import (
 	"testing"
 	"net/http"
     "net/http/httptest"
-
     "github.com/yodertv/test-atomic-writes/api"
 )
 
