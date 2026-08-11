@@ -35,10 +35,27 @@ func map_log(fd int, length int) (d []byte, err error){
 	return
 }
 
+func map_log_readonly(fd int, length int) (d []byte, err error){
+	var (
+		off int64 = 0
+		prot int = syscall.PROT_READ
+		flags int = syscall.MAP_SHARED
+	)
+	pgsz := int(syscall.Getpagesize())
+	length = pgsz * ((length / pgsz) + 1)
+	d, err = syscall.Mmap(fd, off, length, prot, flags)
+	return
+}
+
 // Open the file in append mode for sequential, atomic writing.
 func open_file(path string) (fd int, err error) {
+	fd, err = syscall.Open(path, syscall.O_RDONLY | syscall.O_APPEND, syscall.S_IREAD | syscall.S_IWRITE )
+	return
+}
+
+// Create the file in append mode for sequential, atomic writing.
+func open_or_create_file(path string) (fd int, err error) {
 	fd, err = syscall.Open(path, syscall.O_RDWR | syscall.O_CREAT | syscall.O_APPEND, syscall.S_IREAD | syscall.S_IWRITE )
-	check(err)
 	return
 }
 
@@ -66,6 +83,10 @@ func Validate_bytes(path string, count int, size int, workers int) int {
 	err := error(nil)
 	fd := int(0)
 	fd, err = open_file(path)
+	if err == syscall.ENOENT {
+		fmt.Printf("Validate_bytes: file not found. file=%s\n", path)
+		return 1
+	}
 	check(err)
 	err = syscall.Fstat(fd, &stat)
 	check(err)
@@ -76,7 +97,7 @@ func Validate_bytes(path string, count int, size int, workers int) int {
 	}
 	efs := count * size * workers
 	emc := count * workers
-	d, err := map_log(fd, int(filesize))
+	d, err := map_log_readonly(fd, int(filesize))
 	check(err)
 	lastByte := byte(d[0])
 	lastMsg := lastByte
@@ -129,7 +150,7 @@ func close_log (fd int, file string){
 func Write_bytes (count int, size int, workers int, worker int, filename string) {
 	// As a worker append count messages unique to the worker.
 	if worker > -1 {
-		fd, err := open_file(filename)
+		fd, err := open_or_create_file(filename)
 		check(err)
 		defer close_log(fd, filename)
 		msg := make([]byte, size)

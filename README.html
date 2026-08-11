@@ -1272,13 +1272,26 @@ Usage of ./test-atomic-writes:
 Note: The readonly switch also needs the identical parameters used to create the file.
 Note: Shuffle express how interleved the workers output is with one another. It is the ratio of the times a message and its predecessor were written by different workers over the number of workers.</p>
 <h2 id="build-and-test">Build and Test<a class="headerlink" href="#build-and-test" title="Permanent link"></a></h2>
-<div class="highlight"><pre>./build.sh
-pushd api ; go test -v . ; popd
-pushd lib ; go test -v . ; popd
-go test -v main_test.go
-./test-atomic-writes
+<p><div class="highlight"><pre>./build.sh
+go test -list=. ./...
+Entering TestMain...
+TestAtomicWrites
+TestReadOnly
+TestAtomicWritesExec
+TestReadOnlyExec
+Exiting TestMain...
+ok    test-atomic-writes  0.248s
+TestAtomicWritesHandler
+ok    test-atomic-writes/api  0.434s
+Entering TestMain...
+TestAtomicWrites
+TestReadOnly
+Exiting TestMain...
+ok    test-atomic-writes/lib  0.630s
 </pre></div>
-
+<div class="highlight"><pre>go test -v ./...
+./test-atomic-writes
+</pre></div></p>
 <h2 id="example-deployed-on-vercel">Example deployed on Vercel<a class="headerlink" href="#example-deployed-on-vercel" title="Permanent link"></a></h2>
 <ul>
 <li>See the test results from the last deployment at <a href="https://test-atomic-writes.vercel.app/test-output.log">https://test-atomic-writes.vercel.app/test-output.log</a>.</li>
@@ -1293,6 +1306,10 @@ go test -v main_test.go
 <ul>
 <li>Write in append mode in Mac OS X APFS doesn&rsquo;t appear to be atomic. Resolved 6.9.2018.</li>
 <li>TestReadOnly panics when run before TestAtomicWrites ever has. Should simply fail instead. Resolved 11.12.2025</li>
+</ul>
+<h3 id="08102026">08.10.2026<a class="headerlink" href="#08102026" title="Permanent link"></a></h3>
+<ul>
+<li>Distinguish readonly from update in the library. Found bug on vercel&rsquo;s lamda readoly file system.</li>
 </ul>
 <h3 id="08092026-d3202d2">08.09.2026 (d3202d2)<a class="headerlink" href="#08092026-d3202d2" title="Permanent link"></a></h3>
 <ul>

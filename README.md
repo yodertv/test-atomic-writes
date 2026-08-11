@@ -31,11 +31,27 @@ Note: Shuffle express how interleved the workers output is with one another. It 
 ## Build and Test
 ```
 ./build.sh
-pushd api ; go test -v . ; popd
-pushd lib ; go test -v . ; popd
-go test -v main_test.go
+go test -list=. ./...
+Entering TestMain...
+TestAtomicWrites
+TestReadOnly
+TestAtomicWritesExec
+TestReadOnlyExec
+Exiting TestMain...
+ok    test-atomic-writes  0.248s
+TestAtomicWritesHandler
+ok    test-atomic-writes/api  0.434s
+Entering TestMain...
+TestAtomicWrites
+TestReadOnly
+Exiting TestMain...
+ok    test-atomic-writes/lib  0.630s
+```
+```
+go test -v ./...
 ./test-atomic-writes
 ```
+
 ## Example deployed on Vercel
 
 - See the test results from the last deployment at https://test-atomic-writes.vercel.app/test-output.log.
@@ -48,6 +64,9 @@ go test -v main_test.go
 ## Resolved Issues
 - Write in append mode in Mac OS X APFS doesn't appear to be atomic. Resolved 6.9.2018.
 - TestReadOnly panics when run before TestAtomicWrites ever has. Should simply fail instead. Resolved 11.12.2025
+
+### 08.10.2026
+- Distinguish readonly from update in the library. Found bug on vercel's lamda readoly file system.
 
 ### 08.09.2026 (d3202d2)
 - Working on a go lambda function to host an online test-atomic-writes service.
