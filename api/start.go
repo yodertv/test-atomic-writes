@@ -26,13 +26,21 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 
     // The idea to fork an executable doesn't work in vercel. I can't put executables into the api directory and the api
     // directory can't see any of the public files served by the vercel run-time. Which makes sense from a security perspective.
-	// var cmdName string = "../test-atomic-writes"
+
     var cmdName = "pwd"
     var cmdArgs []string = []string{}
     var cmd *exec.Cmd = cmdMake(w, cmdName, cmdArgs)
 	err = cmd.Start()
     if err != nil { fmt.Fprintf(w, "Start failed for command %s %s: %v\n", cmdName, cmdArgs, err) }
 	err = cmd.Wait()
+    if err != nil { fmt.Fprintf(w, "Wait failed for command %s %s: %v\n",cmdName, cmdArgs, err) }
+
+    cmdName = "ls"
+    cmdArgs = []string{"-laR"}
+    cmd = cmdMake(w, cmdName, cmdArgs)
+    err = cmd.Start()
+    if err != nil { fmt.Fprintf(w, "Start failed for command %s %s: %v\n", cmdName, cmdArgs, err) }
+    err = cmd.Wait()
     if err != nil { fmt.Fprintf(w, "Wait failed for command %s %s: %v\n",cmdName, cmdArgs, err) }
 
     cmdName = "cat"
