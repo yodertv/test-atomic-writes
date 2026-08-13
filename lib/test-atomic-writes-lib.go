@@ -169,7 +169,7 @@ func Write_bytes (count int, size int, workers int, worker int, filename string)
 	} else {
 		err := error(nil)
 		// Start clean, by removing the existing file.
-		syscall.Unlink(filename)
+		// syscall.Unlink(filename)
 		cmds := make([] *exec.Cmd, workers)
 		os.Args = append(os.Args, []string{ "-worker", "0" } ...)
 		// As the parent, start the workers with shared IO, wait for them, and test the results.

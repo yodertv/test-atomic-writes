@@ -9,6 +9,7 @@ import (
     "runtime"
     "os/exec"
     "net/http"
+    "path/filepath"
     "github.com/yodertv/test-atomic-writes/lib"
 )
 
@@ -44,7 +45,8 @@ func Handler(w http.ResponseWriter, r *http.Request) {
     if err != nil { fmt.Fprintf(w, "Wait failed for command %s %s: %v\n",cmdName, cmdArgs, err) }
 
     cmdName = "cat"
-    cmdArgs = []string{"LICENSE"}
+    filePath := filepath.Join("..", "public", "LICENSE")
+    cmdArgs = []string{filePath}
     cmd = cmdMake(w, cmdName, cmdArgs)
     err = cmd.Start()
     if err != nil { fmt.Fprintf(w, "Start failed for command %s %s: %v\n", cmdName, cmdArgs, err) }

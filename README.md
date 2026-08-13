@@ -31,6 +31,8 @@ Note: Shuffle express how interleved the workers output is with one another. It 
 ## Build and Test
 ```
 ./build.sh
+```
+```
 go test -list=. ./...
 Entering TestMain...
 TestAtomicWrites

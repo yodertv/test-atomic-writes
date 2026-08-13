@@ -1273,7 +1273,8 @@ Note: The readonly switch also needs the identical parameters used to create the
 Note: Shuffle express how interleved the workers output is with one another. It is the ratio of the times a message and its predecessor were written by different workers over the number of workers.</p>
 <h2 id="build-and-test">Build and Test<a class="headerlink" href="#build-and-test" title="Permanent link"></a></h2>
 <p><div class="highlight"><pre>./build.sh
-go test -list=. ./...
+</pre></div>
+<div class="highlight"><pre>go test -list=. ./...
 Entering TestMain...
 TestAtomicWrites
 TestReadOnly
