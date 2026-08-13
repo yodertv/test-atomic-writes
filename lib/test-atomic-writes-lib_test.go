@@ -21,9 +21,10 @@ func TestMain(m *testing.M) {
     lib.Parse_args(&cl)
     // Run all tests and capture the result, res, only in the parent executable.
     if cl.Worker == -1 { // The orchestrating process has worker index = -1.
+        cl.Filename = "../testdata"
         res = m.Run()
     }
-    fmt.Printf("Exiting TestMain...")
+    fmt.Printf("Exiting TestMain with %d result...\n", res)
     return
 }
 

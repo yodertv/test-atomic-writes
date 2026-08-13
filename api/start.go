@@ -13,7 +13,7 @@ import (
     "github.com/yodertv/test-atomic-writes/lib"
 )
 
-var args = lib.Cmdline_args{ 50, 4096, 3, -1, false, "testdata" }
+var args = lib.Cmdline_args{ 50, 4096, 3, -1, false, "../testdata" }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
     currentTime := time.Now().Format(time.RFC850)

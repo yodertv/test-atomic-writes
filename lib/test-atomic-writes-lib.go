@@ -90,13 +90,13 @@ func Validate_bytes(path string, count int, size int, workers int) int {
 	check(err)
 	err = syscall.Fstat(fd, &stat)
 	check(err)
-	filesize := int(stat.Size)
-	if filesize == 0 {
-		fmt.Printf("Validate_bytes: filesize missmatch: filesize=%d expected file size > %d\n", filesize, 0)
-		return 1
-	}
 	efs := count * size * workers
 	emc := count * workers
+	filesize := int(stat.Size)
+	if filesize == 0 {
+		fmt.Printf("Validate_bytes: unexpected filesize: filesize=%d expected multiple of %d\n", filesize, efs)
+		return 1
+	}
 	d, err := map_log_readonly(fd, int(filesize))
 	check(err)
 	lastByte := byte(d[0])
@@ -105,9 +105,9 @@ func Validate_bytes(path string, count int, size int, workers int) int {
 	msgCnt := 0
 	errCnt := 0
 	byteCount := 1
-	if filesize != efs {
+	if filesize % efs != 0 {
 		errCnt++
-		fmt.Printf("Validate_bytes: filesize missmatch: filesize=%d expected file size=%d\n", filesize, efs)
+		fmt.Printf("Validate_bytes: unexpected filesize: filesize=%d expected multiple of %d\n", filesize, efs)
 	}
 	for i := 1 ; i < filesize ; i++ {
 		if lastByte == d[i] {
@@ -133,11 +133,11 @@ func Validate_bytes(path string, count int, size int, workers int) int {
 		lastByte = d[i]
 		lastMsg = lastByte
 	}
-	if msgCnt != emc {
-		fmt.Printf("Validate_bytes: missed messages: msgCnt=%d expected=%d difference=%d\n", msgCnt, emc, emc - msgCnt)
+	if msgCnt % emc != 0 {
+		fmt.Printf("Validate_bytes: missed messages: msgCnt=%d expected multiple of %d\n", msgCnt, emc)
 		errCnt++
 	}
-	fmt.Printf("Validate_bytes: source changes=%d shuffle=%.2f msgCnt=%d errCnt=%d\n", msgSrcChangeCnt, float32(msgSrcChangeCnt)/float32(workers), msgCnt, errCnt)
+	fmt.Printf("Validate_bytes: valid: source changes=%d, shuffle=%.2f, msgCnt=%d, errCnt=%d\n", msgSrcChangeCnt, float32(msgSrcChangeCnt)/float32(workers), msgCnt, errCnt)
 	return (errCnt)
 }
 

@@ -35,7 +35,7 @@ func TestMain(m *testing.M) {
     if cl.Worker == -1 { // The orchestrating process has worker index = -1.
         res = m.Run()
     }
-    fmt.Printf("Exiting TestMain...")
+    fmt.Printf("Exiting TestMain...\n")
     return
 }
 
