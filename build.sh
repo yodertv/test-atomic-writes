@@ -12,8 +12,8 @@ pwd
 cp -p ./README.html $DIST/index.html
 cp -p ./LICENSE $DIST
 go version
-go mod init main
-go mod tidy
+# go mod init main
+# go mod tidy
 go build -o test-atomic-writes
 go test ./... -cpu 4 -parallel 20 -timeout 5m -v > $DIST/test-output.log
 
