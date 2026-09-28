@@ -2,6 +2,9 @@ test-atomic-writes
 ==================
 Test your filesystem's ability to correctly serialize writes as expected in APPEND mode on a POSIX system.
 
+### License
+- [LICENSE](https://test-atomic-writes.vercel.app/LICENSE.html) 
+
 ## Resources
 - [Visit Golang!](https://golang.org)
 - [Not the Wizard!](https://www.notthewizard.com/2014/06/17/are-files-appends-really-atomic)
@@ -66,6 +69,9 @@ go test -v ./...
 ## Resolved Issues
 - Write in append mode in Mac OS X APFS doesn't appear to be atomic. Resolved 6.9.2018.
 - TestReadOnly panics when run before TestAtomicWrites ever has. Should simply fail instead. Resolved 11.12.2025
+
+### 09.27.2026
+- Returning to this effort after succeeding with ``go-mod-sample``.
 
 ### 08.10.2026
 - Distinguish readonly from update in the library. Found bug on vercel's lamda readoly file system.

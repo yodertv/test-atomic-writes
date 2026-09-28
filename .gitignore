@@ -2,7 +2,6 @@
 out.tmp
 test-atomic-writes
 pkg
-public
 go.work
 testdata
-api/LICENSE
+.env*
