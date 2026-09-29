@@ -9,8 +9,8 @@ exec 2>&1
 set -x
 date
 pwd
-cp -p ./README.html $DIST/index.html
-cp -p ./LICENSE $DIST
+# cp -p ./README.html $DIST/index.html
+# cp -p ./LICENSE $DIST
 go version
 # go mod init main
 # go mod tidy
