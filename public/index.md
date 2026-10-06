@@ -61,6 +61,7 @@ go test -v ./...
 
 - See the test results from the last deployment at https://test-atomic-writes.vercel.app/test-output.log.
 - See the build output from the last deployment at https://test-atomic-writes.vercel.app/build-output.log.
+- Trigger a fresh test run (via deployment) at https://test-atomic-writes.vercel.app/api/start.
 
 ## Backlog
 - Fix api/start to call the test code properly. Currently just demonstrated by extracting go environment info and executing "ls" and "pwd".
@@ -69,6 +70,9 @@ go test -v ./...
 ## Resolved Issues
 - Write in append mode in Mac OS X APFS doesn't appear to be atomic. Resolved 6.9.2018.
 - TestReadOnly panics when run before TestAtomicWrites ever has. Should simply fail instead. Resolved 11.12.2025
+
+### 10.05.2026
+- Proposing emplying a Vercel Deploy Hook for api/start to trigger a fresh test run via the deployment build.
 
 ### 09.27.2026
 - Returning to this effort after succeeding with ``go-mod-sample``.

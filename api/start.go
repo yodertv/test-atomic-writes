@@ -45,8 +45,16 @@ func StartHandler(w http.ResponseWriter, r *http.Request) {
     err = cmd.Wait()
     if err != nil { fmt.Fprintf(w, "Wait failed for command %s %s: %v\n",cmdName, cmdArgs, err) }
 
+    cmdName = "echo"
+    filePath := filepath.Join("/tmp", "hello.html")
+    cmdArgs = []string{"Hello World!\n", ">", filePath}
+    cmd = cmdMake(w, cmdName, cmdArgs)
+    err = cmd.Start()
+    if err != nil { fmt.Fprintf(w, "Start failed for command %s %s: %v\n", cmdName, cmdArgs, err) }
+    err = cmd.Wait()
+    if err != nil { fmt.Fprintf(w, "Wait failed for command %s %s: %v\n",cmdName, cmdArgs, err) }
+
     cmdName = "cat"
-    filePath := filepath.Join("..", "public", "LICENSE")
     cmdArgs = []string{filePath}
     cmd = cmdMake(w, cmdName, cmdArgs)
     err = cmd.Start()
