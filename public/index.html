@@ -1301,6 +1301,7 @@ ok    test-atomic-writes/lib  0.630s
 <ul>
 <li>See the test results from the last deployment at <a href="https://test-atomic-writes.vercel.app/test-output.log">https://test-atomic-writes.vercel.app/test-output.log</a>.</li>
 <li>See the build output from the last deployment at <a href="https://test-atomic-writes.vercel.app/build-output.log">https://test-atomic-writes.vercel.app/build-output.log</a>.</li>
+<li>Trigger a fresh test run (via deployment) at <a href="https://test-atomic-writes.vercel.app/api/start">https://test-atomic-writes.vercel.app/api/start</a>.</li>
 </ul>
 <h2 id="backlog">Backlog<a class="headerlink" href="#backlog" title="Permanent link"></a></h2>
 <ul>
@@ -1311,6 +1312,11 @@ ok    test-atomic-writes/lib  0.630s
 <ul>
 <li>Write in append mode in Mac OS X APFS doesn&rsquo;t appear to be atomic. Resolved 6.9.2018.</li>
 <li>TestReadOnly panics when run before TestAtomicWrites ever has. Should simply fail instead. Resolved 11.12.2025</li>
+</ul>
+<h3 id="10052026">10.05.2026<a class="headerlink" href="#10052026" title="Permanent link"></a></h3>
+<ul>
+<li>Proposing emplying a Vercel Deploy Hook for api/start to trigger a fresh test run via the deployment build.</li>
+<li>Find deploy hooks at &lsquo;&rsquo;Settings &gt; Git &gt; Deploy Hooks&rsquo;&lsquo;</li>
 </ul>
 <h3 id="09272026">09.27.2026<a class="headerlink" href="#09272026" title="Permanent link"></a></h3>
 <ul>

@@ -73,6 +73,7 @@ go test -v ./...
 
 ### 10.05.2026
 - Proposing emplying a Vercel Deploy Hook for api/start to trigger a fresh test run via the deployment build.
+- Find deploy hooks at ''Settings > Git > Deploy Hooks''
 
 ### 09.27.2026
 - Returning to this effort after succeeding with ``go-mod-sample``.
