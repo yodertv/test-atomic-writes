@@ -61,11 +61,16 @@ go test -v ./...
 
 - See the test results from the last deployment at https://test-atomic-writes.vercel.app/test-output.log.
 - See the build output from the last deployment at https://test-atomic-writes.vercel.app/build-output.log.
-- Trigger a fresh test run (via deployment) at https://test-atomic-writes.vercel.app/api/start.
+- Trigger a fresh test run (via deployment) via  https://test-atomic-writes.vercel.app/api/restart.
+- Set the CmdLine arguments via https://test-atomic-writes.vercel.app/api/start.
 
 ## Backlog
 - Fix api/start to call the test code properly. Currently just demonstrated by extracting go environment info and executing "ls" and "pwd".
 - Make a test for the library. Doesn't work because test tooling needs ForkExec so breaks. Need to use the go primitives.
+- Accept proposal to employ Vercel Deploy Hook for api/restart to trigger a fresh test run via the deployment build.
+- Add setting test=atomic-writes CmdLine arguments for subsequent retest.
+- Consume these CmdLine arguments in the next build and test execution.
+- Build the executalbe in TestMain().
 
 ## Resolved Issues
 - Write in append mode in Mac OS X APFS doesn't appear to be atomic. Resolved 6.9.2018.
@@ -73,7 +78,8 @@ go test -v ./...
 
 ### 10.05.2026
 - Proposing emplying a Vercel Deploy Hook for api/start to trigger a fresh test run via the deployment build.
-- Find deploy hooks at ''Settings > Git > Deploy Hooks''
+- Find deploy hooks at ''Settings > Git > Deploy Hooks''.
+- Working to finish the demo project with api/start and api/restart.
 
 ### 09.27.2026
 - Returning to this effort after succeeding with ``go-mod-sample``.

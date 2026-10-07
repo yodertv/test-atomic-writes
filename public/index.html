@@ -1301,12 +1301,17 @@ ok    test-atomic-writes/lib  0.630s
 <ul>
 <li>See the test results from the last deployment at <a href="https://test-atomic-writes.vercel.app/test-output.log">https://test-atomic-writes.vercel.app/test-output.log</a>.</li>
 <li>See the build output from the last deployment at <a href="https://test-atomic-writes.vercel.app/build-output.log">https://test-atomic-writes.vercel.app/build-output.log</a>.</li>
-<li>Trigger a fresh test run (via deployment) at <a href="https://test-atomic-writes.vercel.app/api/start">https://test-atomic-writes.vercel.app/api/start</a>.</li>
+<li>Trigger a fresh test run (via deployment) via  <a href="https://test-atomic-writes.vercel.app/api/restart">https://test-atomic-writes.vercel.app/api/restart</a>.</li>
+<li>Set the CmdLine arguments via <a href="https://test-atomic-writes.vercel.app/api/start">https://test-atomic-writes.vercel.app/api/start</a>.</li>
 </ul>
 <h2 id="backlog">Backlog<a class="headerlink" href="#backlog" title="Permanent link"></a></h2>
 <ul>
 <li>Fix api/start to call the test code properly. Currently just demonstrated by extracting go environment info and executing &ldquo;ls&rdquo; and &ldquo;pwd&rdquo;.</li>
 <li>Make a test for the library. Doesn&rsquo;t work because test tooling needs ForkExec so breaks. Need to use the go primitives.</li>
+<li>Accept proposal to employ Vercel Deploy Hook for api/restart to trigger a fresh test run via the deployment build.</li>
+<li>Add setting test=atomic-writes CmdLine arguments for subsequent retest.</li>
+<li>Consume these CmdLine arguments in the next build and test execution.</li>
+<li>Build the executalbe in TestMain().</li>
 </ul>
 <h2 id="resolved-issues">Resolved Issues<a class="headerlink" href="#resolved-issues" title="Permanent link"></a></h2>
 <ul>
@@ -1316,7 +1321,8 @@ ok    test-atomic-writes/lib  0.630s
 <h3 id="10052026">10.05.2026<a class="headerlink" href="#10052026" title="Permanent link"></a></h3>
 <ul>
 <li>Proposing emplying a Vercel Deploy Hook for api/start to trigger a fresh test run via the deployment build.</li>
-<li>Find deploy hooks at &lsquo;&rsquo;Settings &gt; Git &gt; Deploy Hooks&rsquo;&lsquo;</li>
+<li>Find deploy hooks at &lsquo;&rsquo;Settings &gt; Git &gt; Deploy Hooks&rsquo;&lsquo;.</li>
+<li>Working to finish the demo project with api/start and api/restart.</li>
 </ul>
 <h3 id="09272026">09.27.2026<a class="headerlink" href="#09272026" title="Permanent link"></a></h3>
 <ul>
