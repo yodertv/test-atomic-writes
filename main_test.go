@@ -39,7 +39,7 @@ func TestMain(m *testing.M) {
     return
 }
 
-func TestAtomicWrites(t *testing.T) {
+func TestExecModWrite(t *testing.T) {
     if !cl.Readonly {
         // Note that this function forks a process for each worker.
         lib.Write_bytes(cl.Count, cl.Size, cl.Workers, cl.Worker, cl.Filename)
@@ -53,7 +53,7 @@ func TestAtomicWrites(t *testing.T) {
 }
 
 // Just validate an existing file. Fails if arguments are different from those used when the file was produced.
-func TestReadOnly(t *testing.T) {
+func TestExecModRead(t *testing.T) {
     res = lib.Validate_bytes(cl.Filename, cl.Count, cl.Size, cl.Workers)
     if (res != 0) {
         t.Errorf("Validate_bytes returned non zero status")
@@ -80,7 +80,7 @@ func cmdMake(s string, args []string) *exec.Cmd {
 }
 
 // TestAtomicWritesExec runs the cmdline executable with default arguments
-func TestAtomicWritesExec(t *testing.T){
+func TestExecWrite(t *testing.T){
 	cmdString := "./test-atomic-writes"
 	cmdArgs := []string{}
     cmd := cmdMake(cmdString, cmdArgs)
@@ -92,7 +92,7 @@ func TestAtomicWritesExec(t *testing.T){
 
 // TestReadOnlyExec runs the cmdline executable with default arguments readonly.
 // Todo: This test panics when run before TestAtomicWrites ever has. Should simply fail instead.
-func TestReadOnlyExec(t *testing.T){
+func TestExecRead(t *testing.T){
 	cmdString := "./test-atomic-writes"
 	cmdArgs := []string{"-readonly"}
     cmd := cmdMake(cmdString, cmdArgs)

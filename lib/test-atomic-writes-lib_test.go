@@ -28,7 +28,7 @@ func TestMain(m *testing.M) {
     return
 }
 
-func TestAtomicWrites(t *testing.T) {
+func TestLibWrite(t *testing.T) {
     if !cl.Readonly {
         // Note that this function forks a process for each worker.
         lib.Write_bytes(cl.Count, cl.Size, cl.Workers, cl.Worker, cl.Filename)
@@ -41,7 +41,7 @@ func TestAtomicWrites(t *testing.T) {
     }
 }
 
-func TestReadOnly(t *testing.T) {
+func TestLibRead(t *testing.T) {
     res = lib.Validate_bytes(cl.Filename, cl.Count, cl.Size, cl.Workers)
     if (res != 0) {
         t.Errorf("Validate_bytes returned non zero status")

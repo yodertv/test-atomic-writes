@@ -9,7 +9,7 @@ import (
     "github.com/yodertv/test-atomic-writes/api"
 )
 
-func TestAtomicWritesHandler(t *testing.T) {
+func TestStartHandler(t *testing.T) {
     // Create a request to pass to our handler. We don't have any query parameters for now, so we'll
     // pass 'nil' as the third parameter.
     req, err := http.NewRequest("GET", "/api/start", nil)
@@ -25,13 +25,41 @@ func TestAtomicWritesHandler(t *testing.T) {
     hndlr.ServeHTTP(rr, req)
     // Check the status code is what we expect.
     if status := rr.Code; status != http.StatusOK {
-        t.Errorf("handler returned wrong status code: got %v want %v",
+        t.Errorf("start handler returned wrong status code: got %v want %v",
             status, http.StatusOK)
     }
     // Check the response body is what we expect.
     expected := 100
     if len(rr.Body.String()) < expected {
-        t.Errorf("handler returned unexpected body size: got %v want %v",
+        t.Errorf("start handler returned unexpected body size: got %v want %v",
+            len(rr.Body.String()), expected)
+    }
+    t.Log(rr.Body.String())
+}
+
+func TestRestartHandler(t *testing.T) {
+    // Create a request to pass to our handler. We don't have any query parameters for now, so we'll
+    // pass 'nil' as the third parameter.
+    req, err := http.NewRequest("GET", "/api/restart", nil)
+    if err != nil {
+        t.Fatal(err)
+    }
+    // We create a ResponseRecorder (which satisfies http.ResponseWriter) to record the response.
+    rr := httptest.NewRecorder()
+    hndlr := http.HandlerFunc(api.RestartHandler)
+
+    // Our handlers satisfy http.Handler, so we can call their ServeHTTP method
+    // directly and pass in our Request and ResponseRecorder.
+    hndlr.ServeHTTP(rr, req)
+    // Check the status code is what we expect.
+    if status := rr.Code; status != http.StatusOK {
+        t.Errorf("restart handler returned wrong status code: got %v want %v",
+            status, http.StatusOK)
+    }
+    // Check the response body is what we expect.
+    expected := 100
+    if len(rr.Body.String()) < expected {
+        t.Errorf("restart handler returned unexpected body size: got %v want %v",
             len(rr.Body.String()), expected)
     }
     t.Log(rr.Body.String())
