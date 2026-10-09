@@ -5,3 +5,4 @@ pkg
 go.work
 testdata
 .env*
+tests.out

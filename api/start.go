@@ -5,6 +5,7 @@ import (
 	"io"
     "fmt"
     "time"
+    "errors"
     "syscall"
     "runtime"
     "os/exec"
@@ -26,12 +27,34 @@ func StartHandler(w http.ResponseWriter, r *http.Request) {
     name, err = os.Getwd() 
     fmt.Fprintf(w, "Working directory=%s, err=%v\n", name, err)
 
-    // The idea to fork an executable doesn't work in vercel. I can't put executables into the api directory and the api
+    // The idea to fork an executable doesn't work in vercel lamda. I can't put executables into the api directory and the api
     // directory can't see any of the public files served by the vercel run-time. Which makes sense from a security perspective.
 
-    var cmdName = "pwd"
-    var cmdArgs []string = []string{}
-    var cmd *exec.Cmd = cmdMake(w, cmdName, cmdArgs)
+    var cmdName = "touch"
+    var filePath = filepath.Join("/tmp", "hello")
+    var cmdArgs []string = []string{filePath}
+//    var cmd *exec.Cmd = cmdMake(w, cmdName, cmdArgs)
+    var cmd *exec.Cmd = exec.Command(cmdName, cmdArgs...)
+    // CombinedOutput runs the command and returns both stdout and stderr together
+    output, cerr := cmd.CombinedOutput()
+    if cerr != nil {
+        fmt.Fprintf(w, "Start failed for command %s %s: %v\n", cmdName, cmdArgs, cerr)
+        // 1. Extract the exit code
+        var exitErr *exec.ExitError
+        if errors.As(cerr, &exitErr) {
+            fmt.Fprintf(w, "Command failed with Exit Code: %d\n", exitErr.ExitCode())
+        } else {
+            fmt.Fprintf(w, "Failed to run command %s %s (system error): %v\n", cmdName, cmdArgs, cerr)
+        }
+        // 2. Extract the stderr output
+        fmt.Fprintf(w, "Error output (stderr): %s %v\n", string(output), cerr)
+    } else {
+        fmt.Fprintf(w, "%s\nSuccess error: %v\n", string(output), cerr)
+    }
+
+    cmdName = "pwd"
+    cmdArgs = []string{}
+    cmd = cmdMake(w, cmdName, cmdArgs)
 	err = cmd.Start()
     if err != nil { fmt.Fprintf(w, "Start failed for command %s %s: %v\n", cmdName, cmdArgs, err) }
 	err = cmd.Wait()
@@ -39,15 +62,6 @@ func StartHandler(w http.ResponseWriter, r *http.Request) {
 
     cmdName = "ls"
     cmdArgs = []string{"-laR"}
-    cmd = cmdMake(w, cmdName, cmdArgs)
-    err = cmd.Start()
-    if err != nil { fmt.Fprintf(w, "Start failed for command %s %s: %v\n", cmdName, cmdArgs, err) }
-    err = cmd.Wait()
-    if err != nil { fmt.Fprintf(w, "Wait failed for command %s %s: %v\n",cmdName, cmdArgs, err) }
-
-    cmdName = "echo"
-    filePath := filepath.Join("/tmp", "hello.html")
-    cmdArgs = []string{"Hello World!\n", ">", filePath}
     cmd = cmdMake(w, cmdName, cmdArgs)
     err = cmd.Start()
     if err != nil { fmt.Fprintf(w, "Start failed for command %s %s: %v\n", cmdName, cmdArgs, err) }
