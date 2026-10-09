@@ -61,7 +61,7 @@ func StartHandler(w http.ResponseWriter, r *http.Request) {
     if err != nil { fmt.Fprintf(w, "Wait failed for command %s %s: %v\n",cmdName, cmdArgs, err) }
 
     cmdName = "ls"
-    cmdArgs = []string{"-laR"}
+    cmdArgs = []string{"-laR", "/tmp/"}
     cmd = cmdMake(w, cmdName, cmdArgs)
     err = cmd.Start()
     if err != nil { fmt.Fprintf(w, "Start failed for command %s %s: %v\n", cmdName, cmdArgs, err) }
