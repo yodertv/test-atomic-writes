@@ -1318,6 +1318,12 @@ ok    test-atomic-writes/lib  0.630s
 <li>Write in append mode in Mac OS X APFS doesn&rsquo;t appear to be atomic. Resolved 6.9.2018.</li>
 <li>TestReadOnly panics when run before TestAtomicWrites ever has. Should simply fail instead. Resolved 11.12.2025</li>
 </ul>
+<h2 id="dev-log">Dev log<a class="headerlink" href="#dev-log" title="Permanent link"></a></h2>
+<h3 id="10082026">10.08.2026<a class="headerlink" href="#10082026" title="Permanent link"></a></h3>
+<ul>
+<li>Confirmed that vercel lambda functions can read and write in /tmp. Will explore further.</li>
+<li>7375467 (HEAD -&gt; master, origin/master, origin/HEAD) Inspect /tmp drectory in start method.</li>
+</ul>
 <h3 id="10052026">10.05.2026<a class="headerlink" href="#10052026" title="Permanent link"></a></h3>
 <ul>
 <li>Proposing emplying a Vercel Deploy Hook for api/start to trigger a fresh test run via the deployment build.</li>

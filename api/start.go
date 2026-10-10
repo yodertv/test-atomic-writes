@@ -15,7 +15,7 @@ import (
     "github.com/yodertv/test-atomic-writes/lib"
 )
 
-var args = lib.Cmdline_args{ 50, 4096, 3, -1, false, "../testdata" }
+var args = lib.Cmdline_args{ 50, 4096, 3, -1, false, "/tmp/testdata" }
 
 func StartHandler(w http.ResponseWriter, r *http.Request) {
     currentTime := time.Now().Format(time.RFC850)
@@ -31,7 +31,7 @@ func StartHandler(w http.ResponseWriter, r *http.Request) {
     // directory can't see any of the public files served by the vercel run-time. Which makes sense from a security perspective.
 
     var cmdName = "touch"
-    var filePath = filepath.Join("/tmp", "hello")
+    var filePath = filepath.Join("/tmp", "testdata")
     var cmdArgs []string = []string{filePath}
 //    var cmd *exec.Cmd = cmdMake(w, cmdName, cmdArgs)
     var cmd *exec.Cmd = exec.Command(cmdName, cmdArgs...)
@@ -76,6 +76,7 @@ func StartHandler(w http.ResponseWriter, r *http.Request) {
     err = cmd.Wait()
     if err != nil { fmt.Fprintf(w, "Wait failed for command %s %s: %v\n",cmdName, cmdArgs, err) }
 
+    lib.Write_bytes(args.Count, args.Size, args.Workers, -1, args.Filename)
     res := lib.Validate_bytes(args.Filename, args.Count, args.Size, args.Workers)
     fmt.Fprintf(w, "Validate_bytes returned: %d\n", res)
 }
