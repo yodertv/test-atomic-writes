@@ -4,6 +4,7 @@ import (
 	"os"
 	"io"
     "fmt"
+    "flag"
     "time"
     "errors"
     "syscall"
@@ -15,7 +16,7 @@ import (
     "github.com/yodertv/test-atomic-writes/lib"
 )
 
-var args = lib.Cmdline_args{ 50, 4096, 3, -1, false, "/tmp/testdata" }
+var args = lib.Cmdline_args{}
 
 func StartHandler(w http.ResponseWriter, r *http.Request) {
     currentTime := time.Now().Format(time.RFC850)
@@ -61,6 +62,14 @@ func StartHandler(w http.ResponseWriter, r *http.Request) {
     if err != nil { fmt.Fprintf(w, "Wait failed for command %s %s: %v\n",cmdName, cmdArgs, err) }
 
     cmdName = "ls"
+    cmdArgs = []string{"-laR", "."}
+    cmd = cmdMake(w, cmdName, cmdArgs)
+    err = cmd.Start()
+    if err != nil { fmt.Fprintf(w, "Start failed for command %s %s: %v\n", cmdName, cmdArgs, err) }
+    err = cmd.Wait()
+    if err != nil { fmt.Fprintf(w, "Wait failed for command %s %s: %v\n",cmdName, cmdArgs, err) }
+
+    cmdName = "ls"
     cmdArgs = []string{"-laR", "/tmp/"}
     cmd = cmdMake(w, cmdName, cmdArgs)
     err = cmd.Start()
@@ -68,14 +77,14 @@ func StartHandler(w http.ResponseWriter, r *http.Request) {
     err = cmd.Wait()
     if err != nil { fmt.Fprintf(w, "Wait failed for command %s %s: %v\n",cmdName, cmdArgs, err) }
 
-    cmdName = "cat"
-    cmdArgs = []string{filePath}
-    cmd = cmdMake(w, cmdName, cmdArgs)
-    err = cmd.Start()
-    if err != nil { fmt.Fprintf(w, "Start failed for command %s %s: %v\n", cmdName, cmdArgs, err) }
-    err = cmd.Wait()
-    if err != nil { fmt.Fprintf(w, "Wait failed for command %s %s: %v\n",cmdName, cmdArgs, err) }
-
+    fmt.Fprintf(w, "Comandline Args: %v\n", os.Args)
+    lib.Parse_args(&args) // Source default arguments
+    if len(flag.Args()) != 0 { // Extraneous arguments
+        flag.Usage();
+        fmt.Fprintf(w, "Parse_args: See server log for Usage info.\n")
+        return
+    }
+    fmt.Fprintf(w, "Test parametters: %v\n", args)
     lib.Write_bytes(args.Count, args.Size, args.Workers, -1, args.Filename)
     res := lib.Validate_bytes(args.Filename, args.Count, args.Size, args.Workers)
     fmt.Fprintf(w, "Validate_bytes returned: %d\n", res)

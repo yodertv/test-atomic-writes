@@ -202,7 +202,7 @@ func Parse_args(cl *Cmdline_args) {
     flag.CommandLine.Init(os.Args[0], flag.ContinueOnError)
     flag.StringVar(&cl.Filename, "f", "/tmp/testdata", "f(ilename) to use for test")
     flag.IntVar(&cl.Count, "c", 50, "c(ount): of writes per worker, use at least 1")
-    flag.IntVar(&cl.Size, "s", 4096, "s(size): in bytes to write, use at least 2")
+    flag.IntVar(&cl.Size, "s", 1024, "s(size): in bytes to write, use at least 2")
     flag.IntVar(&cl.Workers, "w", 3, "w(orkers): number of concurent writers, use at least 1 and no more than 222")
     flag.BoolVar(&cl.Readonly, "readonly", false, "readonly: just run the validate function, use identical flags")
     flag.IntVar(&cl.Worker, "worker", -1, "worker: perform the writes, internal")
