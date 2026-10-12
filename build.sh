@@ -19,7 +19,7 @@ if ! command -v go &> /dev/null; then
     echo "⚠️ Go command not found. Initializing Go environment..."
 
     # 1. Download and extract portable Go into the current working directory
-    curl -sL https://go.dev/dl/go${GO_VERSION}.darwin-amd64.pkg | tar -xz
+    curl -sL https://go.dev/dl/go${GO_VERSION}.darwin-amd64.tar.gz | tar -xzf -
 
     # 2. Add the freshly extracted binary directory to the PATH
     export PATH="$PATH:$(pwd)/go/bin"
