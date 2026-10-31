@@ -78,6 +78,10 @@ go test -v ./...
 
 ## Dev log
 
+### 10.31.2026
+- Have two go monoliths running on vercel, go-mon-example and go-mod-sample.
+- Will apply those learnings to hosting test-atomic-writes.
+
 ### 10.08.2026
 - Confirmed that vercel lambda functions can read and write in /tmp. Will explore further.
 - 7375467 (HEAD -> master, origin/master, origin/HEAD) Inspect /tmp drectory in start method.
