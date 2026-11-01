@@ -7,25 +7,34 @@ export LOG_NAME=${DIST}/build-output.log
 exec 1>${LOG_NAME}
 exec 2>&1
 set -x
+echo $PATH
+env | grep VERCEL
 date
 pwd
-# cp -p ./README.html $DIST/index.html
 
-# Define target Go version
-GO_VERSION="1.25.3"
+# Deploy static content
+cp -p ./README.html $DIST/index.html
+cp -p ./LICENSE.html $DIST/LICENSE.html
+
+# Source target Go version from go.mod
+export `sed -En 's/^go (.*)$/GO_VERSION=\1/p' go.mod`
+
+echo ${GO_VERSION}
+echo ${GOARCH}
+echo ${GOOS}
 
 # Check if 'go' exists in the PATH
 if ! command -v go &> /dev/null; then
-    echo "⚠️ Go command not found. Initializing Go environment..."
+    echo "Go command not found. Initializing Go environment..."
 
     # 1. Download and extract portable Go into the current working directory
-    curl -sL https://go.dev/dl/go${GO_VERSION}.darwin-amd64.tar.gz | tar -xzf -
+    curl -sL https://go.dev/dl/go${GO_VERSION}.${GOOS}-${GOARCH}.tar.gz | tar -xzf -
 
     # 2. Add the freshly extracted binary directory to the PATH
     export PATH="$PATH:$(pwd)/go/bin"
-    echo "✅ Go environment initialized successfully."
+    echo "Go environment initialized successfully."
 else
-    echo "✅ Go is already available in the system PATH."
+    echo "Go is already available in the system PATH."
 fi
 
 # Print the active version to confirm everything works
@@ -37,7 +46,8 @@ go build -o test-atomic-writes
 go test ./... -cpu 4 -parallel 20 -timeout 5m -v > ${DIST}/test-output.log
 
 # Would like to be able to install this on my lamda, but haven't learned how to deploy more code to the api dectory.
-# For now you have to redeploy to test again.
+# Now attempting to control the test via a monolith go host.
+
 cp -p ./test-atomic-writes ${DIST}
 ls -lR .
 
