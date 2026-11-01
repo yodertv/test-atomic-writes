@@ -14,6 +14,11 @@ import (
     "path/filepath"
 )
 
+var (
+    Args = Cmdline_args{}
+    empty_args = Cmdline_args{}
+)
+
 func StartHandler(w http.ResponseWriter, r *http.Request) {
     currentTime := time.Now().Format(time.RFC850)
     fmt.Fprintf(w, "%v\n", currentTime)
@@ -74,14 +79,18 @@ func StartHandler(w http.ResponseWriter, r *http.Request) {
     if err != nil { fmt.Fprintf(w, "Wait failed for command %s %s: %v\n",cmdName, cmdArgs, err) }
 
     fmt.Fprintf(w, "Comandline Args: %v\n", os.Args)
-    if len(flag.Args()) != 0 { // Extraneous arguments
-        flag.Usage();
-        fmt.Fprintf(w, "Parse_args: See server log for Usage info.\n")
-        return
+    if Args == empty_args {
+        Parse_args(&Args)
+        if len(flag.Args()) != 0 { // Extraneous arguments
+            flag.Usage();
+            fmt.Fprintf(w, "Parse_args: See server log for Usage info.\n")
+            return
+        }
     }
-    fmt.Fprintf(w, "Test parametters: %v\n", args)
-    Write_bytes(args.Count, args.Size, args.Workers, -1, args.Filename)
-    res := Validate_bytes(args.Filename, args.Count, args.Size, args.Workers)
+
+    fmt.Fprintf(w, "Test parametters: %v\n", Args)
+    Write_bytes(Args.Count, Args.Size, Args.Workers, -1, Args.Filename)
+    res := Validate_bytes(Args.Filename, Args.Count, Args.Size, Args.Workers)
     fmt.Fprintf(w, "Validate_bytes returned: %d\n", res)
 }
 

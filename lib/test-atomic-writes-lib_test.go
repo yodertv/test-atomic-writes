@@ -11,14 +11,14 @@ import (
 
 var (
     res = 0
-    cl = lib.Cmdline_args{}
+    cl = &lib.Args
 )
 
 // This test requires a main to parse args and perform worker tasks.
 func TestMain(m *testing.M) {
     fmt.Printf("Entering TestMain...\n")
     // Initialize test
-    lib.Parse_args(&cl)
+    lib.Parse_args(cl)
     // Run all tests and capture the result, res, only in the parent executable.
     if cl.Worker == -1 { // The orchestrating process has worker index = -1.
         res = m.Run()

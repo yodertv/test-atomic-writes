@@ -15,7 +15,7 @@ import (
 
 var (
     res = 0
-    cl = lib.Cmdline_args{}
+    cl = &lib.Args
 )
 
 // tCheck is a helper function for fatal tests
@@ -30,7 +30,7 @@ func tCheck(e error, t *testing.T) {
 func TestMain(m *testing.M) {
     fmt.Printf("Entering TestMain...\n")
     // Initialize test
-    lib.Parse_args(&cl)
+    lib.Parse_args(cl)
     // Run all tests and capture the result, res, only in the parent executable.
     if cl.Worker == -1 { // The orchestrating process has worker index = -1.
         res = m.Run()
@@ -81,7 +81,7 @@ func cmdMake(s string, args []string) *exec.Cmd {
 
 // TestAtomicWritesExec runs the cmdline executable with default arguments
 func TestExecWrite(t *testing.T){
-	cmdString := "./cmd/test-atomic-writes"
+	cmdString := "./test-atomic-writes"
 	cmdArgs := []string{}
     cmd := cmdMake(cmdString, cmdArgs)
 	err := cmd.Start()
@@ -93,7 +93,7 @@ func TestExecWrite(t *testing.T){
 // TestReadOnlyExec runs the cmdline executable with default arguments readonly.
 // Todo: This test panics when run before TestAtomicWrites ever has. Should simply fail instead.
 func TestExecRead(t *testing.T){
-	cmdString := "./cmd/test-atomic-writes"
+	cmdString := "./test-atomic-writes"
 	cmdArgs := []string{"-readonly"}
     cmd := cmdMake(cmdString, cmdArgs)
 	err := cmd.Start()
