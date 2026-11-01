@@ -18,7 +18,9 @@ func RestartHandler(w http.ResponseWriter, r *http.Request) {
 	// 2. Retrieve the hook URL from environment variables
 	hookURL := os.Getenv("VERCEL_DEPLOY_HOOK_URL")
 	if hookURL == "" {
-		http.Error(w, "Deploy hook URL environment variable is not set", http.StatusInternalServerError)
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(`{"status": "success", "message": "Deploy hook URL environment variable is not set.
+			Skipping deployment trigger."}`))
 		return
 	}
 
