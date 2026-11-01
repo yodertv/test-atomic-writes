@@ -1,12 +1,13 @@
 // start_test.go
 
-package api_test
+package lib_test
 
 import (
 	"testing"
 	"net/http"
     "net/http/httptest"
-    "github.com/yodertv/test-atomic-writes/api"
+
+    "github.com/yodertv/test-atomic-writes/lib"
 )
 
 func TestStartHandler(t *testing.T) {
@@ -18,7 +19,7 @@ func TestStartHandler(t *testing.T) {
     }
     // We create a ResponseRecorder (which satisfies http.ResponseWriter) to record the response.
     rr := httptest.NewRecorder()
-    hndlr := http.HandlerFunc(api.StartHandler)
+    hndlr := http.HandlerFunc(lib.StartHandler)
 
     // Our handlers satisfy http.Handler, so we can call their ServeHTTP method
     // directly and pass in our Request and ResponseRecorder.
@@ -46,7 +47,7 @@ func TestRestartHandler(t *testing.T) {
     }
     // We create a ResponseRecorder (which satisfies http.ResponseWriter) to record the response.
     rr := httptest.NewRecorder()
-    hndlr := http.HandlerFunc(api.RestartHandler)
+    hndlr := http.HandlerFunc(lib.RestartHandler)
 
     // Our handlers satisfy http.Handler, so we can call their ServeHTTP method
     // directly and pass in our Request and ResponseRecorder.

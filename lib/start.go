@@ -1,4 +1,4 @@
-package api
+package lib
 
 import (
 	"os"
@@ -12,11 +12,7 @@ import (
     "os/exec"
     "net/http"
     "path/filepath"
-
-    "github.com/yodertv/test-atomic-writes/lib"
 )
-
-var args = lib.Cmdline_args{}
 
 func StartHandler(w http.ResponseWriter, r *http.Request) {
     currentTime := time.Now().Format(time.RFC850)
@@ -78,15 +74,14 @@ func StartHandler(w http.ResponseWriter, r *http.Request) {
     if err != nil { fmt.Fprintf(w, "Wait failed for command %s %s: %v\n",cmdName, cmdArgs, err) }
 
     fmt.Fprintf(w, "Comandline Args: %v\n", os.Args)
-    lib.Parse_args(&args) // Source default arguments
     if len(flag.Args()) != 0 { // Extraneous arguments
         flag.Usage();
         fmt.Fprintf(w, "Parse_args: See server log for Usage info.\n")
         return
     }
     fmt.Fprintf(w, "Test parametters: %v\n", args)
-    lib.Write_bytes(args.Count, args.Size, args.Workers, -1, args.Filename)
-    res := lib.Validate_bytes(args.Filename, args.Count, args.Size, args.Workers)
+    Write_bytes(args.Count, args.Size, args.Workers, -1, args.Filename)
+    res := Validate_bytes(args.Filename, args.Count, args.Size, args.Workers)
     fmt.Fprintf(w, "Validate_bytes returned: %d\n", res)
 }
 
