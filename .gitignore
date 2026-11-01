@@ -1,8 +1,9 @@
 .vercel
 out.tmp
-test-atomic-writes
+cmd/test-atomic-writes
 pkg
 go.work
 testdata
 .env*
 tests.out
+./main

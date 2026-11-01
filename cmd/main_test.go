@@ -81,7 +81,7 @@ func cmdMake(s string, args []string) *exec.Cmd {
 
 // TestAtomicWritesExec runs the cmdline executable with default arguments
 func TestExecWrite(t *testing.T){
-	cmdString := "./test-atomic-writes"
+	cmdString := "./cmd/test-atomic-writes"
 	cmdArgs := []string{}
     cmd := cmdMake(cmdString, cmdArgs)
 	err := cmd.Start()
@@ -93,7 +93,7 @@ func TestExecWrite(t *testing.T){
 // TestReadOnlyExec runs the cmdline executable with default arguments readonly.
 // Todo: This test panics when run before TestAtomicWrites ever has. Should simply fail instead.
 func TestExecRead(t *testing.T){
-	cmdString := "./test-atomic-writes"
+	cmdString := "./cmd/test-atomic-writes"
 	cmdArgs := []string{"-readonly"}
     cmd := cmdMake(cmdString, cmdArgs)
 	err := cmd.Start()
