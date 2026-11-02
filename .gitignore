@@ -1,9 +1,10 @@
 .vercel
 out.tmp
-cmd/test-atomic-writes
+test-atomic-writes
 pkg
 go.work
 testdata
 .env*
 tests.out
-./main
+main
+public

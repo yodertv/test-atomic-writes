@@ -40,15 +40,13 @@ fi
 # Print the active version to confirm everything works
 go version
 
-# go mod init main
 # go mod tidy
-go build -o test-atomic-writes
+go build cmd/test-atomic-writes.go
 go test ./... -cpu 4 -parallel 20 -timeout 5m -v > ${DIST}/test-output.log
 
 # Would like to be able to install this on my lamda, but haven't learned how to deploy more code to the api dectory.
 # Now attempting to control the test via a monolith go host.
 
-cp -p ./test-atomic-writes ${DIST}
 ls -lR .
 
 # Always exit successfully because when the build or test fails the dist directory is not served 
