@@ -41,6 +41,7 @@ fi
 go version
 
 # go mod tidy
+go build main.go
 go build cmd/test-atomic-writes.go
 go test ./... -cpu 4 -parallel 20 -timeout 5m -v > ${DIST}/test-output.log
 
