@@ -6,6 +6,7 @@ package main
 
 import (
 	"os"
+	"log"
 	"flag"
 
 	"github.com/yodertv/test-atomic-writes/lib"
@@ -21,6 +22,7 @@ func main() {
 		flag.Usage();
 		os.Exit(1)
 	}
+	log.Printf("test-atomic-writes starting on with args: %v...", cl)
 	if (!cl.Readonly){
 		// Note that this function forks a process for each worker.
 		lib.Write_bytes(cl.Count, cl.Size, cl.Workers, cl.Worker, cl.Filename)
