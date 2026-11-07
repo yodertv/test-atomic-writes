@@ -16,21 +16,24 @@ func main() {
 		port = "3000"
 	}
 
-	// 1. Setup a multiplexer (router)
+	// Setup a multiplexer (router)
 	mux := http.NewServeMux()
 
-	// 2. Wire a handler function to it's api path.
+	// Wire the StartHandler function to it's api path.
 	mux.HandleFunc("/api/start", lib.StartHandler)
 
-	// 3. Example API endpoint (if your service builds/handles other requests)
+	// Restart API endpoint (if your service builds/handles other requests)
 	mux.HandleFunc("/api/restart", lib.RestartHandler)
 
-	// 5. Any route not caught by specific handlers will hit the "/" handler
-	mux.HandleFunc("/api/", func(w http.ResponseWriter, r *http.Request) {
-	    w.Header().Set("Content-Type", "application/json")
-	    w.WriteHeader(http.StatusNotFound)
-	    fmt.Fprintln(w, `{"error": "This API endpoint does not exist"}`)
-	})
+	// Any api requests not caught by specific handlers will hit the api home, "/api/", handler
+	mux.HandleFunc("/api/", handleHome)
+
+	// Static File Server handler that serves content out of the localized "./static" folder
+	fileServer := http.FileServer(http.Dir("./public"))
+
+	// Registers the file server. By appending a trailing slash, it catches all routes
+	// that didn't match the specific API endpoints above.
+	mux.Handle("/", fileServer)
 
 	// Start the server
 	log.Printf("test-atomic-writes-server starting on port %s...", port)
@@ -38,4 +41,15 @@ func main() {
 	if err != nil {
 		log.Fatalf("Server failed to start: %v", err)
 	}
+}
+
+func handleHome(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/api/" {
+	    w.Header().Set("Content-Type", "application/json")
+	    w.WriteHeader(http.StatusNotFound)
+	    fmt.Fprintln(w, `{"error": "This API endpoint does not exist"}`)
+		return
+	}
+	w.Header().Set("Content-Type", "text/plain")
+	fmt.Fprintln(w, "Welcome to test-atomic-writes online!")
 }
