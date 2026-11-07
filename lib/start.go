@@ -61,7 +61,7 @@ func StartHandler(w http.ResponseWriter, r *http.Request) {
     if err != nil { fmt.Fprintf(w, "Start failed for command %s %s: %v\n", cmdName, cmdArgs, err) }
 	err = cmd.Wait()
     if err != nil { fmt.Fprintf(w, "Wait failed for command %s %s: %v\n",cmdName, cmdArgs, err) }
-
+/*
     cmdName = "ls"
     cmdArgs = []string{"-laR", "."}
     cmd = cmdMake(w, cmdName, cmdArgs)
@@ -69,7 +69,7 @@ func StartHandler(w http.ResponseWriter, r *http.Request) {
     if err != nil { fmt.Fprintf(w, "Start failed for command %s %s: %v\n", cmdName, cmdArgs, err) }
     err = cmd.Wait()
     if err != nil { fmt.Fprintf(w, "Wait failed for command %s %s: %v\n",cmdName, cmdArgs, err) }
-
+*/
     cmdName = "ls"
     cmdArgs = []string{"-laR", "/tmp/"}
     cmd = cmdMake(w, cmdName, cmdArgs)
@@ -79,6 +79,7 @@ func StartHandler(w http.ResponseWriter, r *http.Request) {
     if err != nil { fmt.Fprintf(w, "Wait failed for command %s %s: %v\n",cmdName, cmdArgs, err) }
 
     fmt.Fprintf(w, "Comandline Args: %v\n", os.Args)
+    fmt.Fprintf(w, "PID: %v\n", os.Getpid())
     if Args == empty_args {
         Parse_args(&Args)
         if len(flag.Args()) != 0 { // Extraneous arguments
