@@ -4,10 +4,15 @@ import (
 	"fmt"
 	"os"
 	"log"
+	"io/fs"
+	"embed"
 	"net/http"
 
 	"github.com/yodertv/test-atomic-writes/lib"
 )
+
+//go:embed public/*
+var publicFiles embed.FS
 
 func main() {
 	// Define the port to listen on
@@ -28,8 +33,17 @@ func main() {
 	// Any api requests not caught by specific handlers will hit the api home, "/api/", handler
 	mux.HandleFunc("/api/", handleHome)
 
+	// Create a sub-file system rooted at "public"
+	subFS, err := fs.Sub(publicFiles, "public")
+	if err != nil {
+		log.Fatalf("Failed to create static fileServer: %v", err)
+		return
+	}
+
+	// Serve static files using the embedded filesystem
+	fileServer := http.FileServer(http.FS(subFS))
 	// Static File Server handler that serves content out of the localized "./static" folder
-	fileServer := http.FileServer(http.Dir("./public"))
+	// fileServer := http.FileServer(http.Dir("./public"))
 
 	// Registers the file server. By appending a trailing slash, it catches all routes
 	// that didn't match the specific API endpoints above.
@@ -37,7 +51,7 @@ func main() {
 
 	// Start the server
 	log.Printf("test-atomic-writes-server starting on port %s...", port)
-	err := http.ListenAndServe(":"+port, mux)
+	err = http.ListenAndServe(":"+port, mux)
 	if err != nil {
 		log.Fatalf("Server failed to start: %v", err)
 	}

@@ -1,15 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "./build.sh",
-  "framework": "go",
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/go"
-    },
-    {
-      "source": "/((?!api/).*)",
-      "destination": "/public/$1"
-    }
-  ]
+  "framework": "go"
 }
