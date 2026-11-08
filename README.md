@@ -2,7 +2,7 @@ test-atomic-writes
 ==================
 Test your filesystem's ability to correctly serialize writes as expected in APPEND mode on a POSIX system.
 
-### License
+## License
 - [LICENSE](https://test-atomic-writes.vercel.app/LICENSE.html) 
 
 ## Resources
@@ -77,6 +77,10 @@ go test -v ./...
 - TestReadOnly panics when run before TestAtomicWrites ever has. Should simply fail instead. Resolved 11.12.2025
 
 ## Dev log
+
+### 11.07.2026
+- Finally found go-api-starter and went on with embeded files. Don't know what magic makes the pubilic files available
+- to the go server as it works in go-mod-example. Now I can return to making the demo useful.
 
 ### 10.31.2026
 - Have two go monoliths running on vercel, go-mon-example and go-mod-sample.

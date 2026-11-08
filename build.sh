@@ -49,8 +49,8 @@ go test -cpu 4 -parallel 20 -timeout 5m -v ./... > ${DIST}/test-output.log
 
 ls -lR ${DIST}
 
+go build -o ./cmd/test-atomic-writes/test-atomic-writes ./cmd/test-atomic-writes/test-atomic-writes.go
 go build main.go
-# go build ./cmd/test-atomic-writes/test-atomic-writes.go
 
 # Always exit successfully because when the build or test fails the dist directory is not served 
 # by Vercel so you can't see the test output for debugging.
