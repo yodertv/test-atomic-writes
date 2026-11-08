@@ -1244,15 +1244,16 @@ body .markdown-body
 		.highlight .gc{color:#999;background-color:#EAF2F5}
   }
 }
-</style><title>index</title></head><body data-theme="auto"><article class="markdown-body"><h1 id="test-atomic-writes">test-atomic-writes<a class="headerlink" href="#test-atomic-writes" title="Permanent link"></a></h1>
+</style><title>README</title></head><body data-theme="auto"><article class="markdown-body"><h1 id="test-atomic-writes">test-atomic-writes<a class="headerlink" href="#test-atomic-writes" title="Permanent link"></a></h1>
 <p>Test your filesystem&rsquo;s ability to correctly serialize writes as expected in APPEND mode on a POSIX system.</p>
-<h3 id="license">License<a class="headerlink" href="#license" title="Permanent link"></a></h3>
+<h2 id="license">License<a class="headerlink" href="#license" title="Permanent link"></a></h2>
 <ul>
 <li><a href="https://test-atomic-writes.vercel.app/LICENSE.html">LICENSE</a> </li>
 </ul>
 <h2 id="resources">Resources<a class="headerlink" href="#resources" title="Permanent link"></a></h2>
 <ul>
 <li><a href="https://golang.org">Visit Golang!</a></li>
+<li><a href="https://vercel.com/templates/go/go-api-starter">Vercel&rsquo;s go-api-starter</a></li>
 <li><a href="https://www.notthewizard.com/2014/06/17/are-files-appends-really-atomic">Not the Wizard!</a></li>
 <li><a href="http://stackoverflow.com/questions/1154446/is-file-append-atomic-in-unix">Stackoverflow file-append atomic question</a></li>
 </ul>
@@ -1275,7 +1276,14 @@ Usage of ./test-atomic-writes:
 </code></pre></div>
 Note: The readonly switch also needs the identical parameters used to create the file.
 Note: Shuffle express how interleved the workers output is with one another. It is the ratio of the times a message and its predecessor were written by different workers over the number of workers.</p>
-<h2 id="build-and-test">Build and Test<a class="headerlink" href="#build-and-test" title="Permanent link"></a></h2>
+<h2 id="live-example-on">Live example on <Platform><a class="headerlink" href="#live-example-on" title="Permanent link"></a></h2>
+<ul>
+<li>See the test results from the last deployment at <a href="https://test-atomic-writes.vercel.app/test-output.log">https://test-atomic-writes.vercel.app/test-output.log</a>.</li>
+<li>See the build output from the last deployment at <a href="https://test-atomic-writes.vercel.app/build-output.log">https://test-atomic-writes.vercel.app/build-output.log</a>.</li>
+<li>Trigger a fresh test run (via deployment) via  <a href="https://test-atomic-writes.vercel.app/api/restart">https://test-atomic-writes.vercel.app/api/restart</a>.</li>
+<li>Set the CmdLine arguments via <a href="https://test-atomic-writes.vercel.app/api/start">https://test-atomic-writes.vercel.app/api/start</a>.</li>
+</ul>
+<h2 id="build-test-and-run">Build, test, and run<a class="headerlink" href="#build-test-and-run" title="Permanent link"></a></h2>
 <p><div class="highlight"><pre><span></span><code>./build.sh
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>go test -list=. ./...
@@ -1297,13 +1305,6 @@ ok    test-atomic-writes/lib  0.630s
 <div class="highlight"><pre><span></span><code>go test -v ./...
 ./test-atomic-writes
 </code></pre></div></p>
-<h2 id="example-deployed-on-vercel">Example deployed on Vercel<a class="headerlink" href="#example-deployed-on-vercel" title="Permanent link"></a></h2>
-<ul>
-<li>See the test results from the last deployment at <a href="https://test-atomic-writes.vercel.app/test-output.log">https://test-atomic-writes.vercel.app/test-output.log</a>.</li>
-<li>See the build output from the last deployment at <a href="https://test-atomic-writes.vercel.app/build-output.log">https://test-atomic-writes.vercel.app/build-output.log</a>.</li>
-<li>Trigger a fresh test run (via deployment) via  <a href="https://test-atomic-writes.vercel.app/api/restart">https://test-atomic-writes.vercel.app/api/restart</a>.</li>
-<li>Set the CmdLine arguments via <a href="https://test-atomic-writes.vercel.app/api/start">https://test-atomic-writes.vercel.app/api/start</a>.</li>
-</ul>
 <h2 id="backlog">Backlog<a class="headerlink" href="#backlog" title="Permanent link"></a></h2>
 <ul>
 <li>Fix api/start to call the test code properly. Currently just demonstrated by extracting go environment info and executing &ldquo;ls&rdquo; and &ldquo;pwd&rdquo;.</li>
@@ -1319,6 +1320,11 @@ ok    test-atomic-writes/lib  0.630s
 <li>TestReadOnly panics when run before TestAtomicWrites ever has. Should simply fail instead. Resolved 11.12.2025</li>
 </ul>
 <h2 id="dev-log">Dev log<a class="headerlink" href="#dev-log" title="Permanent link"></a></h2>
+<h3 id="11072026">11.07.2026<a class="headerlink" href="#11072026" title="Permanent link"></a></h3>
+<ul>
+<li>Finally found go-api-starter and went on with embeded files. Don&rsquo;t know what magic makes the pubilic files available</li>
+<li>to the go server as it works in go-mod-example. Now I can return to making the demo useful.</li>
+</ul>
 <h3 id="10312026">10.31.2026<a class="headerlink" href="#10312026" title="Permanent link"></a></h3>
 <ul>
 <li>Have two go monoliths running on vercel, go-mon-example and go-mod-sample.</li>
