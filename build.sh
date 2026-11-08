@@ -1,14 +1,16 @@
 #!/bin/bash
 # build.sh builds a go executable as a static build and tests it and the api.
 # Redirect all output to the current log
+set -x
 export DIST=public
 mkdir -p ${DIST}
 export LOG_NAME=${DIST}/build-output.log
+echo "Building $LOG_NAME at"
+date
 exec 1>${LOG_NAME}
 exec 2>&1
-set -x
 echo $PATH
-env | grep VERCEL
+# env | grep VERCEL
 date
 pwd
 
@@ -39,11 +41,10 @@ fi
 
 # Print the active version to confirm everything works
 go version
-
-# go mod tidy
-go build main.go
-go build cmd/test-atomic-writes.go
-go test ./... -cpu 4 -parallel 20 -timeout 5m -v > ${DIST}/test-output.log
+go mod tidy
+go build ./cmd/server/main.go
+# go build ./cmd/test-atomic-writes/test-atomic-writes.go
+go test -cpu 4 -parallel 20 -timeout 5m -v ./... > ${DIST}/test-output.log
 
 # Would like to be able to install this on my lamda, but haven't learned how to deploy more code to the api dectory.
 # Now attempting to control the test via a monolith go host.

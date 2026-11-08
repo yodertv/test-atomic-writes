@@ -1,10 +1,49 @@
-.vercel
-out.tmp
+# Basic files
+pkg/
+public/
+server
 test-atomic-writes
-pkg
+
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool
+*.out
+
+# Go workspace file
 go.work
-testdata
-.env*
-tests.out
+go.work.sum
+
+# Dependency directories
+vendor/
+
+# Build output
+api
 main
-public
+test-server
+
+# Environment files
+.env
+.env*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Vercel
+.vercel
+.env*
