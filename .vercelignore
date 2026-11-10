@@ -1,3 +1,4 @@
 public/
+pkg/
+bin/
 main
-test-atomic-writes

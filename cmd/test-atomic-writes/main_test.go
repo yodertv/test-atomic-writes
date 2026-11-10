@@ -16,6 +16,7 @@ import (
 var (
     res = 0
     cl = &lib.Args
+    testCmdString = "../../bin/test-atomic-writes"
 )
 
 // tCheck is a helper function for fatal tests
@@ -81,7 +82,7 @@ func cmdMake(s string, args []string) *exec.Cmd {
 
 // TestAtomicWritesExec runs the cmdline executable with default arguments
 func TestExecWrite(t *testing.T){
-	cmdString := "./test-atomic-writes"
+	cmdString := testCmdString
 	cmdArgs := []string{}
     cmd := cmdMake(cmdString, cmdArgs)
 	err := cmd.Start()
@@ -93,7 +94,7 @@ func TestExecWrite(t *testing.T){
 // TestReadOnlyExec runs the cmdline executable with default arguments readonly.
 // Todo: This test panics when run before TestAtomicWrites ever has. Should simply fail instead.
 func TestExecRead(t *testing.T){
-	cmdString := "./test-atomic-writes"
+	cmdString := testCmdString
 	cmdArgs := []string{"-readonly"}
     cmd := cmdMake(cmdString, cmdArgs)
 	err := cmd.Start()

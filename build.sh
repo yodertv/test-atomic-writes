@@ -3,7 +3,9 @@
 # Redirect all output to the current log
 set -x
 export DIST=public
+export BIN=bin
 mkdir -p ${DIST}
+mkdir -p ${BIN}
 export LOG_NAME=${DIST}/build-output.log
 echo "Building $LOG_NAME at"
 date
@@ -42,14 +44,20 @@ fi
 # Print the active version to confirm everything works
 go version
 go mod tidy
-go test -cpu 4 -parallel 20 -timeout 5m -v ./... > ${DIST}/test-output.log
 
 # Would like to be able to install this on my lamda, but haven't learned how to deploy more code to the api dectory.
 # Now attempting to control the test via a monolith go host.
 
-ls -lR ${DIST}
+go build -o ./${BIN}/test-atomic-writes ./cmd/test-atomic-writes
 
-go build -o ./cmd/test-atomic-writes/test-atomic-writes ./cmd/test-atomic-writes/test-atomic-writes.go
+# Truncate and date the new test-output.log file.
+date > ${DIST}/test-output.log
+go test -cpu 4 -parallel 20 -timeout 5m -v ./... >> ${DIST}/test-output.log
+
+# List the filesystem for curiosity.
+ls -lR .
+
+# Build main last because it embeds the build and test output as static data to serve.
 go build main.go
 
 # Always exit successfully because when the build or test fails the dist directory is not served 

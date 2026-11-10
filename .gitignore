@@ -1,8 +1,7 @@
 # Basic files
 pkg/
 public/
-server
-test-atomic-writes
+bin/
 
 # Binaries for programs and plugins
 *.exe
@@ -27,11 +26,12 @@ vendor/
 # Build output
 api
 main
-test-server
+cmd/test-atomic-writes/test-atomic-writes
 
 # Environment files
 .env
 .env*.local
+.vercel
 
 # IDE
 .vscode/
@@ -43,7 +43,3 @@ test-server
 # OS
 .DS_Store
 Thumbs.db
-
-# Vercel
-.vercel
-.env*
