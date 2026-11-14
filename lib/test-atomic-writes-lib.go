@@ -84,7 +84,7 @@ func Validate_bytes(path string, count int, size int, workers int) int {
 	fd := int(0)
 	fd, err = open_file(path)
 	if err == syscall.ENOENT {
-		fmt.Printf("Validate_bytes: file not found. file=%s\n", path)
+		fmt.Printf("Validate_bytes: file=%s, file not found.\n", path)
 		return 1
 	}
 	check(err)
@@ -94,7 +94,7 @@ func Validate_bytes(path string, count int, size int, workers int) int {
 	emc := count * workers
 	filesize := int(stat.Size)
 	if filesize == 0 {
-		fmt.Printf("Validate_bytes: unexpected filesize: filesize=%d expected multiple of %d\n", filesize, efs)
+		fmt.Printf("Validate_bytes: file=%s, unexpected filesize=%d expected multiple of %d\n", path, filesize, efs)
 		return 1
 	}
 	d, err := map_log_readonly(fd, int(filesize))
@@ -107,21 +107,21 @@ func Validate_bytes(path string, count int, size int, workers int) int {
 	byteCount := 1
 	if filesize % efs != 0 {
 		errCnt++
-		fmt.Printf("Validate_bytes: unexpected filesize: filesize=%d expected multiple of %d\n", filesize, efs)
+		fmt.Printf("Validate_bytes: file=%s, unexpected filesize=%d expected multiple of %d\n", path, filesize, efs)
 	}
 	for i := 1 ; i < filesize ; i++ {
 		if lastByte == d[i] {
 			byteCount++
 		} else if d[i] != '\n' {
 			errCnt++
-			fmt.Printf("Validate_bytes: interleaved write: errCnt=%d byteCount=%d, size%d, msgSrcChangeCnt=%d\n", errCnt, byteCount, size, msgSrcChangeCnt)
+			fmt.Printf("Validate_bytes: file=%s, interleaved write: errCnt=%d byteCount=%d, size%d, msgSrcChangeCnt=%d\n", path, errCnt, byteCount, size, msgSrcChangeCnt)
 		} else {
 			i++
 			msgCnt++
 			byteCount++
 			if byteCount != size {
 				errCnt++
-				fmt.Printf("Validate_bytes: bad messages size: byteCount=%d, size=%d\n", byteCount, size)
+				fmt.Printf("Validate_bytes: file=%s, bad messages size: byteCount=%d, size=%d\n", path, byteCount, size)
 			}
 			if i == filesize { break }
 			if lastMsg != d[i] {
@@ -134,17 +134,15 @@ func Validate_bytes(path string, count int, size int, workers int) int {
 		lastMsg = lastByte
 	}
 	if msgCnt % emc != 0 {
-		fmt.Printf("Validate_bytes: missed messages: msgCnt=%d expected multiple of %d\n", msgCnt, emc)
+		fmt.Printf("Validate_bytes: file=%s, missed messages: msgCnt=%d expected multiple of %d\n", path, msgCnt, emc)
 		errCnt++
 	}
-	fmt.Printf("Validate_bytes: valid: source changes=%d, shuffle=%.2f, msgCnt=%d, errCnt=%d\n", msgSrcChangeCnt, float32(msgSrcChangeCnt)/float32(workers), msgCnt, errCnt)
+	fmt.Printf("Validate_bytes: file=%s, valid: source changes=%d, shuffle=%.2f, msgCnt=%d, errCnt=%d\n", path, msgSrcChangeCnt, float32(msgSrcChangeCnt)/float32(workers), msgCnt, errCnt)
 	return (errCnt)
 }
 
 func close_log (fd int, file string){
 	syscall.Close(fd)
-	// Leave the file for examination post test.
-	// syscall.Unlink(file)
 }
 
 func Write_bytes (count int, size int, workers int, worker int, filename string) {
@@ -168,8 +166,6 @@ func Write_bytes (count int, size int, workers int, worker int, filename string)
 		}
 	} else {
 		err := error(nil)
-		// Start clean, by removing the existing file.
-		// syscall.Unlink(filename)
 		cmds := make([] *exec.Cmd, workers)
 		os.Args = append(os.Args, []string{ "-worker", "0" } ...)
 		// As the parent, start the workers with shared IO, wait for them, and test the results.
