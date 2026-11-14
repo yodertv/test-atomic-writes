@@ -78,9 +78,12 @@ go test -v ./...
 
 ## Dev log
 
-### 11.07.2026
-- Finally found go-api-starter and went on with embeded files. Don't know what magic makes the pubilic files available
-- to the go server as it works in go-mod-example. Now I can return to making the demo useful.
+### 11.09.2026
+- Finally found go-api-starter and went on with embeded files. Don't know what magic makes the pubilic files available to the go server the way it works in go-mod-example.
+- Have partially successful tests from vercel ExecWrite, Read and LibWrite.
+- Read seem to be different /tmp/testdata files because the ValidateBytes output shows only 150 messages.
+- Locally the behavior is all the tests write to the samefile and the message count grows with each run.
+- This has changed and now LibWrite doesn't write any messages. Forks children. No errors until reader reports no messages.
 
 ### 10.31.2026
 - Have two go monoliths running on vercel, go-mon-example and go-mod-sample.

@@ -1320,10 +1320,13 @@ ok    test-atomic-writes/lib  0.630s
 <li>TestReadOnly panics when run before TestAtomicWrites ever has. Should simply fail instead. Resolved 11.12.2025</li>
 </ul>
 <h2 id="dev-log">Dev log<a class="headerlink" href="#dev-log" title="Permanent link"></a></h2>
-<h3 id="11072026">11.07.2026<a class="headerlink" href="#11072026" title="Permanent link"></a></h3>
+<h3 id="11092026">11.09.2026<a class="headerlink" href="#11092026" title="Permanent link"></a></h3>
 <ul>
-<li>Finally found go-api-starter and went on with embeded files. Don&rsquo;t know what magic makes the pubilic files available</li>
-<li>to the go server as it works in go-mod-example. Now I can return to making the demo useful.</li>
+<li>Finally found go-api-starter and went on with embeded files. Don&rsquo;t know what magic makes the pubilic files available to the go server the way it works in go-mod-example.</li>
+<li>Have partially successful tests from vercel ExecWrite, Read and LibWrite.</li>
+<li>Read seem to be different /tmp/testdata files because the ValidateBytes output shows only 150 messages.</li>
+<li>Locally the behavior is all the tests write to the samefile and the message count grows with each run.</li>
+<li>This has changed and now LibWrite doesn&rsquo;t write any messages. Forks children. No errors until reader reports no messages.</li>
 </ul>
 <h3 id="10312026">10.31.2026<a class="headerlink" href="#10312026" title="Permanent link"></a></h3>
 <ul>
