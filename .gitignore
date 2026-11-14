@@ -12,6 +12,7 @@ bin/
 
 # Test binary, built with `go test -c`
 *.test
+testdata
 
 # Output of the go coverage tool
 *.out
