@@ -15,9 +15,9 @@ import (
 func main() {
 	var (
 	    res int = 0
-		cl = lib.Cmdline_args{}
+	    cl = &lib.Args
 	)
-	lib.Parse_args(&cl)
+	lib.Parse_args(cl)
 	if len(flag.Args()) != 0 { // Extraneous arguments
 		flag.Usage();
 		os.Exit(1)
