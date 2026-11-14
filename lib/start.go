@@ -11,7 +11,6 @@ import (
     "runtime"
     "os/exec"
     "net/http"
-    "path/filepath"
 )
 
 var (
@@ -20,6 +19,16 @@ var (
 )
 
 func StartHandler(w http.ResponseWriter, r *http.Request) {
+    fmt.Fprintf(w, "Comandline Args: %v\n", os.Args)
+    fmt.Fprintf(w, "PID: %v\n", os.Getpid())
+    if Args == empty_args {
+        Parse_args(&Args)
+        if len(flag.Args()) != 0 { // Extraneous arguments
+            flag.Usage();
+            fmt.Fprintf(w, "Parse_args: See server log for Usage info.\n")
+            return
+        }
+    }
     currentTime := time.Now().Format(time.RFC850)
     fmt.Fprintf(w, "%v\n", currentTime)
     fmt.Fprintf(w, "%#v\n", runtime.GOOS)
@@ -33,9 +42,7 @@ func StartHandler(w http.ResponseWriter, r *http.Request) {
     // directory can't see any of the public files served by the vercel run-time. Which makes sense from a security perspective.
 
     var cmdName = "touch"
-    var filePath = filepath.Join("/tmp", "testdata")
-    var cmdArgs []string = []string{filePath}
-//    var cmd *exec.Cmd = cmdMake(w, cmdName, cmdArgs)
+    var cmdArgs []string = []string{Args.Filename}
     var cmd *exec.Cmd = exec.Command(cmdName, cmdArgs...)
     // CombinedOutput runs the command and returns both stdout and stderr together
     output, cerr := cmd.CombinedOutput()
@@ -63,31 +70,12 @@ func StartHandler(w http.ResponseWriter, r *http.Request) {
     if err != nil { fmt.Fprintf(w, "Wait failed for command %s %s: %v\n",cmdName, cmdArgs, err) }
 
     cmdName = "ls"
-    cmdArgs = []string{"-laR", "."}
+    cmdArgs = []string{"-la", Args.Filename}
     cmd = cmdMake(w, cmdName, cmdArgs)
     err = cmd.Start()
     if err != nil { fmt.Fprintf(w, "Start failed for command %s %s: %v\n", cmdName, cmdArgs, err) }
     err = cmd.Wait()
     if err != nil { fmt.Fprintf(w, "Wait failed for command %s %s: %v\n",cmdName, cmdArgs, err) }
-
-    cmdName = "ls"
-    cmdArgs = []string{"-la", "/tmp/"}
-    cmd = cmdMake(w, cmdName, cmdArgs)
-    err = cmd.Start()
-    if err != nil { fmt.Fprintf(w, "Start failed for command %s %s: %v\n", cmdName, cmdArgs, err) }
-    err = cmd.Wait()
-    if err != nil { fmt.Fprintf(w, "Wait failed for command %s %s: %v\n",cmdName, cmdArgs, err) }
-
-    fmt.Fprintf(w, "Comandline Args: %v\n", os.Args)
-    fmt.Fprintf(w, "PID: %v\n", os.Getpid())
-    if Args == empty_args {
-        Parse_args(&Args)
-        if len(flag.Args()) != 0 { // Extraneous arguments
-            flag.Usage();
-            fmt.Fprintf(w, "Parse_args: See server log for Usage info.\n")
-            return
-        }
-    }
 
     fmt.Fprintf(w, "Test parametters: %v\n", Args)
     Write_bytes(Args.Count, Args.Size, Args.Workers, -1, Args.Filename)
