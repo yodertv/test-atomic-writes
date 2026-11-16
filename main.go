@@ -8,6 +8,7 @@ import (
 	"io/fs"
 	"embed"
 	"net/http"
+	"path/filepath"
 
 	"github.com/yodertv/test-atomic-writes/lib"
 )
@@ -19,15 +20,17 @@ var cl = &lib.Args
 // Act as an http server when no args are present. Otherwise, act as test-atomic-writes cmdline program.
 func main() {
 	var res = 0
-	if len(flag.Args()) == 0 {
+	// Without arguments start the http server.
+	if len(os.Args) == 1 && filepath.Base(os.Args[0]) == "main" {
+		log.Printf("test-atomic-writes starting with cmdline args: %v", os.Args)
 	    handleListenAndServe()
 	} else {
-		lib.Parse_args(cl)
+		if *cl == lib.Empty_args { lib.Parse_args(cl) }
 		if len(flag.Args()) != 0 { // Extraneous arguments
 			flag.Usage();
 			os.Exit(1)
 		}
-		log.Printf("test-atomic-writes-server starting with args: %v...", cl)
+		log.Printf("test-atomic-writes starting with args: %v", cl)
 		if (!cl.Readonly){
 			// Note that this function forks a process for each worker.
 			lib.Write_bytes(cl.Count, cl.Size, cl.Workers, cl.Worker, cl.Filename)

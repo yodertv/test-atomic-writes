@@ -15,13 +15,13 @@ import (
 
 var (
     Args = Cmdline_args{}
-    empty_args = Cmdline_args{}
+    Empty_args = Cmdline_args{}
 )
 
 func StartHandler(w http.ResponseWriter, r *http.Request) {
     fmt.Fprintf(w, "Comandline Args: %v\n", os.Args)
     fmt.Fprintf(w, "PID: %v\n", os.Getpid())
-    if Args == empty_args {
+    if Args == Empty_args {
         Parse_args(&Args)
         if len(flag.Args()) != 0 { // Extraneous arguments
             flag.Usage();

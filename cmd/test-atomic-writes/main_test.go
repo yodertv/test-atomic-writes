@@ -31,7 +31,7 @@ func tCheck(e error, t *testing.T) {
 func TestMain(m *testing.M) {
     fmt.Printf("Entering TestMain...\n")
     // Initialize test
-    lib.Parse_args(cl)
+    if *cl == lib.Empty_args { lib.Parse_args(cl) }
     // Run all tests and capture the result, res, only in the parent executable.
     if cl.Worker == -1 { // The orchestrating process has worker index = -1.
         res = m.Run()
