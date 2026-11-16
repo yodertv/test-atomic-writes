@@ -181,7 +181,7 @@ func Write_bytes (count int, size int, workers int, worker int, filename string)
 		// wait for each of them to finish
 		for i:=0 ; i < workers ; i++ {
 			err = cmds[i].Wait()
-			fmt.Printf("Write_bytes: worker %d returned error: %v\n", i, err)
+			fmt.Printf("Write_bytes: worker %d args: %s, returned error: %v\n", i, cmds[i].Args[0:], err)
 		}
 	}
 }
@@ -196,7 +196,7 @@ type Cmdline_args struct {
 // where this process is a worker in the test.
 func Parse_args(cl *Cmdline_args) {
     flag.CommandLine.Init(os.Args[0], flag.ContinueOnError)
-    flag.StringVar(&cl.Filename, "f", "/tmp/testdata", "f(ilename) to use for test")
+    flag.StringVar(&cl.Filename, "f", "/var/tmp/testdata.txt", "f(ilename) to use for test")
     flag.IntVar(&cl.Count, "c", 50, "c(ount): of writes per worker, use at least 1")
     flag.IntVar(&cl.Size, "s", 1024, "s(size): in bytes to write, use at least 2")
     flag.IntVar(&cl.Workers, "w", 3, "w(orkers): number of concurent writers, use at least 1 and no more than 222")
