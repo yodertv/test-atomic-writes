@@ -21,7 +21,7 @@ var cl = &lib.Args
 func main() {
 	var res = 0
 	// Without arguments start the http server.
-	if len(os.Args) == 1 && filepath.Base(os.Args[0]) == "main" {
+	if len(os.Args) == 1 && ( filepath.Base(os.Args[0]) == "main" || filepath.Base(os.Args[0]) == "dev-server" ) {
 		log.Printf("test-atomic-writes starting with cmdline args: %v", os.Args)
 	    handleListenAndServe()
 	} else {

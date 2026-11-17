@@ -16,7 +16,7 @@ import (
 var (
     res = 0
     cl = &lib.Args
-    testCmdString = "../../bin/test-atomic-writes"
+    testCmdString = "./bin/test-atomic-writes"
 )
 
 // tCheck is a helper function for fatal tests

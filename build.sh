@@ -48,7 +48,7 @@ go mod tidy
 # Would like to be able to install this on my lamda, but haven't learned how to deploy more code to the api dectory.
 # Now attempting to control the test via a monolith go host.
 
-go build -o ./${BIN}/test-atomic-writes ./cmd/test-atomic-writes
+go build -o ./${BIN}/test-atomic-writes ./main.go
 
 # Truncate and date the new test-output.log file.
 date > ${DIST}/test-output.log
