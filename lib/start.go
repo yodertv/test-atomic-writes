@@ -19,8 +19,16 @@ var (
 )
 
 func StartHandler(w http.ResponseWriter, r *http.Request) {
+    currentTime := time.Now().Format(time.RFC850)
+    fmt.Fprintf(w, "Start time: %v\n", currentTime)
     fmt.Fprintf(w, "Comandline Args: %v\n", os.Args)
     fmt.Fprintf(w, "PID: %v\n", os.Getpid())
+    fmt.Fprintf(w, "GOOS: %#v\n", runtime.GOOS)
+    fmt.Fprintf(w, "Pagesize: %d\n", syscall.Getpagesize())
+    name, err := os.Hostname()
+    fmt.Fprintf(w, "Hostname: %s, err: %v\n", name, err)
+    name, err = os.Getwd()
+    fmt.Fprintf(w, "Getwd: %s, err: %v\n", name, err)
     if Args == Empty_args {
         Parse_args(&Args)
         if len(flag.Args()) != 0 { // Extraneous arguments
@@ -29,14 +37,7 @@ func StartHandler(w http.ResponseWriter, r *http.Request) {
             return
         }
     }
-    currentTime := time.Now().Format(time.RFC850)
-    fmt.Fprintf(w, "%v\n", currentTime)
-    fmt.Fprintf(w, "%#v\n", runtime.GOOS)
-    fmt.Fprintf(w, "pagesize=%d\n", syscall.Getpagesize())
-    name, err := os.Hostname()
-    fmt.Fprintf(w, "Hostname=%s, err=%v\n", name, err)
-    name, err = os.Getwd() 
-    fmt.Fprintf(w, "Working directory=%s, err=%v\n", name, err)
+    fmt.Fprintf(w, "Params: %v", Args)
 
     // The idea to fork an executable doesn't work in vercel lamda. I can't put executables into the api directory and the api
     // directory can't see any of the public files served by the vercel run-time. Which makes sense from a security perspective.
@@ -61,13 +62,9 @@ func StartHandler(w http.ResponseWriter, r *http.Request) {
         fmt.Fprintf(w, "%s\nSuccess error: %v\n", string(output), cerr)
     }
 
-    cmdName = "pwd"
-    cmdArgs = []string{}
-    cmd = cmdMake(w, cmdName, cmdArgs)
-	err = cmd.Start()
-    if err != nil { fmt.Fprintf(w, "Start failed for command %s %s: %v\n", cmdName, cmdArgs, err) }
-	err = cmd.Wait()
-    if err != nil { fmt.Fprintf(w, "Wait failed for command %s %s: %v\n",cmdName, cmdArgs, err) }
+    Write_bytes(Args.Count, Args.Size, Args.Workers, -1, Args.Filename)
+    res := Validate_bytes(Args.Filename, Args.Count, Args.Size, Args.Workers)
+    fmt.Fprintf(w, "Validate_bytes returned: %d\n", res)
 
     cmdName = "ls"
     cmdArgs = []string{"-la", Args.Filename}
@@ -76,11 +73,6 @@ func StartHandler(w http.ResponseWriter, r *http.Request) {
     if err != nil { fmt.Fprintf(w, "Start failed for command %s %s: %v\n", cmdName, cmdArgs, err) }
     err = cmd.Wait()
     if err != nil { fmt.Fprintf(w, "Wait failed for command %s %s: %v\n",cmdName, cmdArgs, err) }
-
-    fmt.Fprintf(w, "Test parametters: %v\n", Args)
-    Write_bytes(Args.Count, Args.Size, Args.Workers, -1, Args.Filename)
-    res := Validate_bytes(Args.Filename, Args.Count, Args.Size, Args.Workers)
-    fmt.Fprintf(w, "Validate_bytes returned: %d\n", res)
 }
 
 // cmdMake returns an exec.Cmd with the command s set up to be started or run with args.
