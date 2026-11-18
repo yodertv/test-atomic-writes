@@ -52,7 +52,7 @@ go build -o ./${BIN}/test-atomic-writes ./main.go
 
 # Truncate and date the new test-output.log file.
 date > ${DIST}/test-output.log
-go test -v ./... >> ${DIST}/test-output.log
+go test -count=1 -v ./... >> ${DIST}/test-output.log
 
 # List the filesystem for curiosity.
 ls -lR .
