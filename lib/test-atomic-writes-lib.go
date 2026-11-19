@@ -195,7 +195,6 @@ type Cmdline_args struct {
 // Handle comandline arguments. Main of this library needs to Init() or parse flags to handle the case
 // where this process is a worker in the test.
 func Parse_args(cl *Cmdline_args) {
-    flag.CommandLine.Init(os.Args[0], flag.ContinueOnError)
     flag.StringVar(&cl.Filename, "f", "/tmp/testdata.txt", "f(ilename) to use for test")
     flag.IntVar(&cl.Count, "c", 50, "c(ount): of writes per worker, use at least 1")
     flag.IntVar(&cl.Size, "s", 1024, "s(size): in bytes to write, use at least 2")
@@ -204,7 +203,8 @@ func Parse_args(cl *Cmdline_args) {
     flag.IntVar(&cl.Worker, "worker", -1, "worker: perform the writes, internal")
     flag.Parse()
     if cl.Workers > 222 || cl.Workers < 1 || cl.Count < 1 || cl.Size < 2 {
-        fmt.Println("Between 1 and 222 workers, writing at least 1 count each, of at least size 2 required to test.")
+        fmt.Println("Option(s) of out bounds. Test using between 1 and 222 workers, writing at least 1 count each, of at least 2 bytes size.")
+		flag.Usage()
         os.Exit(1) // This is fatal.
     }
     return

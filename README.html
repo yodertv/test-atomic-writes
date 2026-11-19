@@ -1258,21 +1258,20 @@ body .markdown-body
 <li><a href="http://stackoverflow.com/questions/1154446/is-file-append-atomic-in-unix">Stackoverflow file-append atomic question</a></li>
 </ul>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link"></a></h2>
-<p><div class="highlight"><pre><span></span><code>mikes-air:test-atomic-writes mike$ ./test-atomic-writes -s 1
-Between 1 and 222 workers, writing at least 1 each, of at least size 2 required to test.
-Usage of ./test-atomic-writes:
+<p><div class="highlight"><pre><span></span><code>% ./bin/test-atomic-writes -help
+Usage of ./bin/test-atomic-writes:
   -c int
-        c(ount): of writes per worker, use at least 1 (default 50)
+      c(ount): of writes per worker, use at least 1 (default 50)
   -f string
-        f(ilename) to use for test (default "out.tmp")
+      f(ilename) to use for test (default "/tmp/testdata.txt")
   -readonly
-        readonly: just run the validate function, use identical flags
+      readonly: just run the validate function, use identical flags
   -s int
-        s(size): in bytes to write, use at least 2 (default 4096)
+      s(size): in bytes to write, use at least 2 (default 1024)
   -w int
-        w(orkers): number of concurent writers, use at least 1 and no more than 222 (default 50)
+      w(orkers): number of concurent writers, use at least 1 and no more than 222 (default 3)
   -worker int
-        worker: perform the writes, internal (default -1)
+      worker: perform the writes, internal (default -1)
 </code></pre></div>
 Note: The readonly switch also needs the identical parameters used to create the file.
 Note: Shuffle express how interleved the workers output is with one another. It is the ratio of the times a message and its predecessor were written by different workers over the number of workers.</p>
@@ -1320,6 +1319,10 @@ ok    test-atomic-writes/lib  0.630s
 <li>TestReadOnly panics when run before TestAtomicWrites ever has. Should simply fail instead. Resolved 11.12.2025</li>
 </ul>
 <h2 id="dev-log">Dev log<a class="headerlink" href="#dev-log" title="Permanent link"></a></h2>
+<h3 id="11182026">11.18.2026<a class="headerlink" href="#11182026" title="Permanent link"></a></h3>
+<ul>
+<li>Ensuring parsing args and usage reporting are conistent with the single main.go for both uses.</li>
+</ul>
 <h3 id="11092026">11.09.2026<a class="headerlink" href="#11092026" title="Permanent link"></a></h3>
 <ul>
 <li>Finally found go-api-starter and went on with embeded files. Don&rsquo;t know what magic makes the pubilic files available to the go server the way it works in go-mod-example.</li>

@@ -29,11 +29,11 @@ func main() {
 	    handleListenAndServe()
 	} else {
 		if *cl == lib.Empty_args { lib.Parse_args(cl) }
-		if len(flag.Args()) != 0 { // Extraneous arguments
+		if flag.NArg() != 0 { // Extraneous arguments
 			flag.Usage();
 			os.Exit(1)
 		}
-		log.Printf("test-atomic-writes starting with args: %v", cl)
+		log.Printf("test-atomic-writes starting with args: %v", *cl)
 		if (!cl.Readonly){
 			// Note that this function forks a process for each worker.
 			lib.Write_bytes(cl.Count, cl.Size, cl.Workers, cl.Worker, cl.Filename)

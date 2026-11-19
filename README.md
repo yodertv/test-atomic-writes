@@ -13,21 +13,20 @@ Test your filesystem's ability to correctly serialize writes as expected in APPE
 
 ## Usage
 ```
-mikes-air:test-atomic-writes mike$ ./test-atomic-writes -s 1
-Between 1 and 222 workers, writing at least 1 each, of at least size 2 required to test.
-Usage of ./test-atomic-writes:
+% ./bin/test-atomic-writes -help
+Usage of ./bin/test-atomic-writes:
   -c int
-    	c(ount): of writes per worker, use at least 1 (default 50)
+      c(ount): of writes per worker, use at least 1 (default 50)
   -f string
-    	f(ilename) to use for test (default "out.tmp")
+      f(ilename) to use for test (default "/tmp/testdata.txt")
   -readonly
-    	readonly: just run the validate function, use identical flags
+      readonly: just run the validate function, use identical flags
   -s int
-    	s(size): in bytes to write, use at least 2 (default 4096)
+      s(size): in bytes to write, use at least 2 (default 1024)
   -w int
-    	w(orkers): number of concurent writers, use at least 1 and no more than 222 (default 50)
+      w(orkers): number of concurent writers, use at least 1 and no more than 222 (default 3)
   -worker int
-    	worker: perform the writes, internal (default -1)
+      worker: perform the writes, internal (default -1)
 ```
 Note: The readonly switch also needs the identical parameters used to create the file.
 Note: Shuffle express how interleved the workers output is with one another. It is the ratio of the times a message and its predecessor were written by different workers over the number of workers.
@@ -77,6 +76,9 @@ go test -v ./...
 - TestReadOnly panics when run before TestAtomicWrites ever has. Should simply fail instead. Resolved 11.12.2025
 
 ## Dev log
+
+### 11.18.2026
+- Ensuring parsing args and usage reporting are conistent with the single main.go for both uses.
 
 ### 11.09.2026
 - Finally found go-api-starter and went on with embeded files. Don't know what magic makes the pubilic files available to the go server the way it works in go-mod-example.
