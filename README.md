@@ -64,14 +64,44 @@ go test -v ./...
 ```
 
 ## Backlog
-- Fix api/start to call the test code properly. Currently just demonstrated by extracting go environment info and executing "ls" and "pwd".
-- Make a test for the library. Doesn't work because test tooling needs ForkExec so breaks. Need to use the go primitives.
+- Under go test conditions Write_bytes only creates the file, but doesn't appear to write to it. Validate_bytes finds an empty file!
+```
+mike@Mikes-Air test-atomic-writes % go test -count=1 -v -run TestStartHandler ./lib 
+Entering TestMain...
+=== RUN   TestStartHandler
+started pid:47927 err:<nil>
+started pid:47928 err:<nil>
+started pid:47929 err:<nil>
+Each line of file /tmp/testdata.txt will be 1024 bytes, written by 3 workers, writing 50 lines each.
+Write_bytes: worker 0 args: [/var/folders/yp/9g7gvlq10xd44zp_6v89rks00000gn/T/go-build3951943339/b001/lib.test -test.paniconexit0 -test.timeout=10m0s -test.count=1 -test.v=true -test.run=TestStartHandler -worker 0], returned error: <nil>
+Write_bytes: worker 1 args: [/var/folders/yp/9g7gvlq10xd44zp_6v89rks00000gn/T/go-build3951943339/b001/lib.test -test.paniconexit0 -test.timeout=10m0s -test.count=1 -test.v=true -test.run=TestStartHandler -worker 1], returned error: <nil>
+Write_bytes: worker 2 args: [/var/folders/yp/9g7gvlq10xd44zp_6v89rks00000gn/T/go-build3951943339/b001/lib.test -test.paniconexit0 -test.timeout=10m0s -test.count=1 -test.v=true -test.run=TestStartHandler -worker 2], returned error: <nil>
+Validate_bytes: file=/tmp/testdata.txt, unexpected filesize=0 expected multiple of 153600
+    start_test.go:38: Start time: Thursday, 19-Nov-26 19:19:57 EST
+        Comandline Args: [/var/folders/yp/9g7gvlq10xd44zp_6v89rks00000gn/T/go-build3951943339/b001/lib.test -test.paniconexit0 -test.timeout=10m0s -test.count=1 -test.v=true -test.run=TestStartHandler]
+        PID: 47924
+        GOOS: "darwin"
+        Pagesize: 16384
+        Hostname: Mikes-Air.local, err: <nil>
+        Getwd: /Users/mike/src/test-atomic-writes/lib, err: <nil>
+        Params: {50 1024 3 -1 false /tmp/testdata.txt}
+        Success error: <nil>
+        Validate_bytes returned: 1
+        -rw-r--r--  1 mike  wheel  0 Nov 19 19:19 /tmp/testdata.txt
+        
+--- PASS: TestStartHandler (0.02s)
+PASS
+Exiting TestMain with 0 result...
+ok    test-atomic-writes/lib  0.270s
+```
 - Accept proposal to employ Vercel Deploy Hook for api/restart to trigger a fresh test run via the deployment build.
 - Add setting test=atomic-writes CmdLine arguments for subsequent retest.
 - Consume these CmdLine arguments in the next build and test execution.
 - Build the executalbe in TestMain().
 
 ## Resolved Issues
+- Resolved making a test for the library. ForkExec works.
+- Rsolved api/start to call the test code properly. Currently just demonstrated by extracting go environment info and executing "ls" and "pwd".
 - Write in append mode in Mac OS X APFS doesn't appear to be atomic. Resolved 6.9.2018.
 - TestReadOnly panics when run before TestAtomicWrites ever has. Should simply fail instead. Resolved 11.12.2025
 
